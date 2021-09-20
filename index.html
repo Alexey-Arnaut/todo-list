@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To Do list</title>
+    <link rel="stylesheet" href="./src/css/style.css">
+</head>
+
+<body>
+
+    <div class="wrapper">
+
+        <div class="create__task">
+            <div class="create__task-wrapper">
+                <div class="create__task-inner">
+                    <h2 class="create__task-title">Создать задачу</h2>
+                    <textarea class="create__task-name" rows="4" placeholder="Название задачи"></textarea>
+                    <button class="create__task-priority-button">
+                        <div class="create__task-priority-selected" id="color-green"></div>
+                        <p class="create__task-priority-title">Установить приоритет</p>
+                    </button>
+                    <div class="create__task-priorities">
+                        <h2 class="create__task-priorities-title">Выберите приоритет</h2>
+                        <button class="create__task-priority">
+                            <div class="create__task-priority-selected" id="color-red"></div>
+                            <p class="create__task-priority-title">Высокий</p>
+                        </button>
+                        <button class="create__task-priority">
+                            <div class="create__task-priority-selected" id="color-green"></div>
+                            <p class="create__task-priority-title">Средний</p>
+                        </button>
+                        <button class="create__task-priority">
+                            <div class="create__task-priority-selected" id="color-yellow"></div>
+                            <p class="create__task-priority-title">Низкий</p>
+                        </button>
+                        <button class="create__task-priority create__task-priority--active">
+                            <p class="create__task-priority-title">Нет приоритета</p>
+                        </button>
+                    </div>
+                    <button class="create__task-add">Добавить задачу</button>
+                </div>
+            </div>
+        </div>
+
+        <header class="header">
+            <div class="header__top">
+                <h3 class="header__top-title">Мои дела</h3>
+                <button class="header__top-settings">
+                    <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="cog"
+                        class="svg-inline--fa fa-cog fa-w-16" role="img" xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 512 512">
+                        <path fill="currentColor"
+                            d="M487.4 315.7l-42.6-24.6c4.3-23.2 4.3-47 0-70.2l42.6-24.6c4.9-2.8 7.1-8.6 5.5-14-11.1-35.6-30-67.8-54.7-94.6-3.8-4.1-10-5.1-14.8-2.3L380.8 110c-17.9-15.4-38.5-27.3-60.8-35.1V25.8c0-5.6-3.9-10.5-9.4-11.7-36.7-8.2-74.3-7.8-109.2 0-5.5 1.2-9.4 6.1-9.4 11.7V75c-22.2 7.9-42.8 19.8-60.8 35.1L88.7 85.5c-4.9-2.8-11-1.9-14.8 2.3-24.7 26.7-43.6 58.9-54.7 94.6-1.7 5.4.6 11.2 5.5 14L67.3 221c-4.3 23.2-4.3 47 0 70.2l-42.6 24.6c-4.9 2.8-7.1 8.6-5.5 14 11.1 35.6 30 67.8 54.7 94.6 3.8 4.1 10 5.1 14.8 2.3l42.6-24.6c17.9 15.4 38.5 27.3 60.8 35.1v49.2c0 5.6 3.9 10.5 9.4 11.7 36.7 8.2 74.3 7.8 109.2 0 5.5-1.2 9.4-6.1 9.4-11.7v-49.2c22.2-7.9 42.8-19.8 60.8-35.1l42.6 24.6c4.9 2.8 11 1.9 14.8-2.3 24.7-26.7 43.6-58.9 54.7-94.6 1.5-5.5-.7-11.3-5.6-14.1zM256 336c-44.1 0-80-35.9-80-80s35.9-80 80-80 80 35.9 80 80-35.9 80-80 80z">
+                        </path>
+                    </svg>
+                </button>
+                <button class="header__top-remove">
+                    <div class="header__top-remove-icon">
+                        <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="trash"
+                            class="svg-inline--fa fa-trash fa-w-14" role="img" xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 448 512">
+                            <path fill="currentColor"
+                                d="M432 32H312l-9.4-18.7A24 24 0 0 0 281.1 0H166.8a23.72 23.72 0 0 0-21.4 13.3L136 32H16A16 16 0 0 0 0 48v32a16 16 0 0 0 16 16h416a16 16 0 0 0 16-16V48a16 16 0 0 0-16-16zM53.2 467a48 48 0 0 0 47.9 45h245.8a48 48 0 0 0 47.9-45L416 128H32z">
+                            </path>
+                        </svg>
+                    </div>
+                    <p class="header__top-remove-title">Удалить все задачи</p>
+                </button>
+            </div>
+            <div class="header__bottom">
+                <div class="header__bottom-progress">
+                    <div class="header__bottom-progress-bar">
+                        <div class="header__bottom-progress-bar-bg" style="width: 0%;"></div>
+                    </div>
+                    <p class="header__bottom-progress-count">0</p>
+                    <span>%</span>
+                </div>
+                <div class="header__bottom-info">
+                    <div class="header__bottom-icon">
+                        <svg aria-hidden="true" focusable="false" data-prefix="far" data-icon="lightbulb"
+                            class="svg-inline--fa fa-lightbulb fa-w-11" role="img" xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 352 512">
+                            <path fill="currentColor"
+                                d="M176 80c-52.94 0-96 43.06-96 96 0 8.84 7.16 16 16 16s16-7.16 16-16c0-35.3 28.72-64 64-64 8.84 0 16-7.16 16-16s-7.16-16-16-16zM96.06 459.17c0 3.15.93 6.22 2.68 8.84l24.51 36.84c2.97 4.46 7.97 7.14 13.32 7.14h78.85c5.36 0 10.36-2.68 13.32-7.14l24.51-36.84c1.74-2.62 2.67-5.7 2.68-8.84l.05-43.18H96.02l.04 43.18zM176 0C73.72 0 0 82.97 0 176c0 44.37 16.45 84.85 43.56 115.78 16.64 18.99 42.74 58.8 52.42 92.16v.06h48v-.12c-.01-4.77-.72-9.51-2.15-14.07-5.59-17.81-22.82-64.77-62.17-109.67-20.54-23.43-31.52-53.15-31.61-84.14-.2-73.64 59.67-128 127.95-128 70.58 0 128 57.42 128 128 0 30.97-11.24 60.85-31.65 84.14-39.11 44.61-56.42 91.47-62.1 109.46a47.507 47.507 0 0 0-2.22 14.3v.1h48v-.05c9.68-33.37 35.78-73.18 52.42-92.16C335.55 260.85 352 220.37 352 176 352 78.8 273.2 0 176 0z">
+                            </path>
+                        </svg>
+                    </div>
+                    <div class="header__bottom-task-completed">0</div>
+                    <span>/</span>
+                    <div class="header__bottom-all-task">0</div>
+                </div>
+                <button class="header__bottom-add open__form">Добавить задачу</button>
+            </div>
+        </header>
+
+        <main class="main">
+            <div class="task-list">
+                <div class="task">
+                    <div class="task__inner">
+                        <button class="task__completed">
+                            <svg width="15" height="11" viewBox="0 0 15 11" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M5.09467 10.784L0.219661 5.98988C-0.0732203 5.70186 -0.0732203 5.23487 0.219661 4.94682L1.2803 3.90377C1.57318 3.61572 2.04808 3.61572 2.34096 3.90377L5.625 7.13326L12.659 0.216014C12.9519 -0.0720048 13.4268 -0.0720048 13.7197 0.216014L14.7803 1.25907C15.0732 1.54709 15.0732 2.01408 14.7803 2.30213L6.15533 10.784C5.86242 11.072 5.38755 11.072 5.09467 10.784Z"
+                                    fill="#4DD599" />
+                            </svg>
+                        </button>
+                        <textarea class="task__name" rows="1" readonly>Первая задача</textarea>
+                        <button class="task__button task__button-edit">
+                            <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="pen"
+                                class="svg-inline--fa fa-pen fa-w-16" role="img" xmlns="http://www.w3.org/2000/svg"
+                                viewBox="0 0 512 512">
+                                <path fill="currentColor"
+                                    d="M290.74 93.24l128.02 128.02-277.99 277.99-114.14 12.6C11.35 513.54-1.56 500.62.14 485.34l12.7-114.22 277.9-277.88zm207.2-19.06l-60.11-60.11c-18.75-18.75-49.16-18.75-67.91 0l-56.55 56.55 128.02 128.02 56.55-56.55c18.75-18.76 18.75-49.16 0-67.91z">
+                                </path>
+                            </svg>
+                        </button>
+                        <button class="task__button task__button-remove">
+                            <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="trash"
+                                class="svg-inline--fa fa-trash fa-w-14" role="img" xmlns="http://www.w3.org/2000/svg"
+                                viewBox="0 0 448 512">
+                                <path fill="currentColor"
+                                    d="M432 32H312l-9.4-18.7A24 24 0 0 0 281.1 0H166.8a23.72 23.72 0 0 0-21.4 13.3L136 32H16A16 16 0 0 0 0 48v32a16 16 0 0 0 16 16h416a16 16 0 0 0 16-16V48a16 16 0 0 0-16-16zM53.2 467a48 48 0 0 0 47.9 45h245.8a48 48 0 0 0 47.9-45L416 128H32z">
+                                </path>
+                            </svg>
+                        </button>
+                        <div class="task__priority" id="color-green"></div>
+                    </div>
+                    <div class="task__edit">
+                        <div class="task__edit-wrapper">
+                            <div class="task__edit-inner">
+                                <h2 class="task__edit-title title">Редактировать задачу</h2>
+                                <textarea class="task__edit-name" rows="4" placeholder="Название задачи"></textarea>
+                                <button class="task__edit-priority-button">
+                                    <div class="task__edit-priority-selected" id="color-green"></div>
+                                    <p class="task__edit-priority-title">Установить приоритет</p>
+                                </button>
+                                <div class="task__edit-priorities">
+                                    <h2 class="task__edit-priorities-title">Выберите приоритет</h2>
+                                    <button class="task__edit-priority priority">
+                                        <div class="task__edit-priority-selected" id="color-red"></div>
+                                        <p class="task__edit-priority-title">Высокий</p>
+                                    </button>
+                                    <button class="task__edit-priority">
+                                        <div class="task__edit-priority-selected" id="color-yellow"></div>
+                                        <p class="task__edit-priority-title">Средний</p>
+                                    </button>
+                                    <button class="task__edit-priority">
+                                        <div class="task__edit-priority-selected" id="color-green"></div>
+                                        <p class="task__edit-priority-title">Низкий</p>
+                                    </button>
+                                    <button class="task__edit-priority task__edit-priority--active">
+                                        <p class="task__edit-priority-title">Нет приоритета</p>
+                                    </button>
+                                </div>
+                                <button class="task__edit-remove">
+                                    <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="trash"
+                                        class="svg-inline--fa fa-trash fa-w-14" role="img"
+                                        xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                                        <path fill="currentColor"
+                                            d="M432 32H312l-9.4-18.7A24 24 0 0 0 281.1 0H166.8a23.72 23.72 0 0 0-21.4 13.3L136 32H16A16 16 0 0 0 0 48v32a16 16 0 0 0 16 16h416a16 16 0 0 0 16-16V48a16 16 0 0 0-16-16zM53.2 467a48 48 0 0 0 47.9 45h245.8a48 48 0 0 0 47.9-45L416 128H32z">
+                                        </path>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tasks__none">
+                    <div class="tasks__none-bg">
+                        <img src="./src/img/img.webp" alt="">
+                    </div>
+                    <h1 class="tasks__none-title">У вас еще нет задач.</h1>
+                    <button class="tasks__none-button open__form">Добавить задачу</button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="./src/js/app.js"></script>
+</body>
+
+</html>
