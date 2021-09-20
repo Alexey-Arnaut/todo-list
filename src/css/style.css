@@ -696,11 +696,17 @@ body {
   bottom: 0;
   left: 0;
   z-index: 99;
-  -webkit-transform: translateY(-100%);
-          transform: translateY(-100%);
+  opacity: 0;
+  pointer-events: none;
+  -webkit-transition: 0.5s;
+  transition: 0.5s;
 }
 
 .create__task--active {
+  opacity: 1;
+  pointer-events: all;
+}
+.create__task--active .create__task-wrapper {
   -webkit-transform: translateY(0);
           transform: translateY(0);
 }
@@ -714,6 +720,10 @@ body {
   left: 0;
   border-radius: 0 0 60px 60px;
   padding: 15px;
+  -webkit-transform: translateY(-100%);
+          transform: translateY(-100%);
+  -webkit-transition: 0.5s;
+  transition: 0.5s;
 }
 
 .create__task-inner {
@@ -812,6 +822,8 @@ body {
   z-index: 1;
   -webkit-transform: translateY(-100%);
           transform: translateY(-100%);
+  -webkit-transition: 0.5s;
+  transition: 0.5s;
 }
 
 .create__task-priorities--active {

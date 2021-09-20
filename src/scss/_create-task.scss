@@ -6,11 +6,18 @@
     bottom: 0;
     left: 0;
     z-index: 99;
-    transform: translateY(-100%);
+    opacity: 0;
+    pointer-events: none;
+    transition: 0.5s;
 }
 
 .create__task--active {
-    transform: translateY(0);
+    opacity: 1;
+    pointer-events: all;
+
+    .create__task-wrapper {
+        transform: translateY(0);
+    }
 }
 
 .create__task-wrapper {
@@ -22,6 +29,8 @@
     left: 0;
     border-radius: 0 0 60px 60px;
     padding: 15px;
+    transform: translateY(-100%);
+    transition: 0.5s;
 }
 
 .create__task-inner {
@@ -99,6 +108,7 @@
     padding: 15px;
     z-index: 1;
     transform: translateY(-100%);
+    transition: 0.5s;
 }
 
 .create__task-priorities--active {
