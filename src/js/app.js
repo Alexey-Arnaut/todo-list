@@ -206,6 +206,7 @@ const renderTask = () => {
 
     document.querySelectorAll('.task').forEach(task => {
         editTask(task);
+        removeTask(task);
     });
 }
 
@@ -303,5 +304,31 @@ const changeTaskPriority = (task) => {
         });
     });
 }
+
+// Удаление задачи
+const removeTask = (task) => {
+    task.querySelector('.task__button-remove').addEventListener('click', () => {
+        tasks.splice([task.dataset.index], 1);
+        updateLocal();
+        renderTask();
+    });
+
+    task.querySelector('.task__edit-remove').addEventListener('click', () => {
+        tasks.splice(task.dataset.index, 1);
+        updateLocal();
+        task.querySelector('.task__edit').classList.remove('task__edit--active');
+
+        setTimeout(() => {
+            renderTask();
+        }, 500);
+    });
+}
+
+// Удаление всех задач
+document.querySelector('.header__top-remove').addEventListener('click', () => {
+    tasks.splice(0, document.querySelectorAll('.task').length);
+    updateLocal();
+    renderTask();
+});
 
 renderTask();
