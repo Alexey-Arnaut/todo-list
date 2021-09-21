@@ -194,6 +194,9 @@ const renderTask = () => {
     tasksList.innerHTML = '';
 
     if (tasks.length > 0) {
+
+        filterTask();
+
         tasks.forEach((item, index) => {
             tasksList.innerHTML += createTaskTemplate(item, index);
         });
@@ -202,12 +205,33 @@ const renderTask = () => {
         document.querySelector('.tasks__none').classList.add('tasks__none--active');
     };
 
-    document.querySelector('.header__bottom-all-task').innerHTML = document.querySelectorAll('.task').length;
-
     document.querySelectorAll('.task').forEach(task => {
         editTask(task);
         removeTask(task);
+        completedTask(task);
+
+        if (task.classList.contains('task--completed')) {
+            task.querySelector('.task__button-edit').disabled = 'true';
+        };
     });
+
+    let allTaskLength = document.querySelectorAll('.task').length;
+    let completedTaskLength = document.querySelectorAll('.task--completed').length;
+
+    document.querySelector('.header__bottom-all-task').innerHTML = allTaskLength;
+    document.querySelector('.header__bottom-task-completed').innerHTML = completedTaskLength;
+
+    if (isNaN(calcPercent(allTaskLength, completedTaskLength))) {
+        document.querySelector('.header__bottom-progress-count').innerHTML = 0;
+        document.querySelector('.header__bottom-progress-bar-bg').style.width = 0;
+    } else {
+        document.querySelector('.header__bottom-progress-count').innerHTML = Math.floor(calcPercent(allTaskLength, completedTaskLength));
+        document.querySelector('.header__bottom-progress-bar-bg').style.width = `${calcPercent(allTaskLength, completedTaskLength)}%`;
+    };
+}
+
+const calcPercent = (num1, num2) => {
+    return 100 * num2 / num1;
 }
 
 // Редактирование задачи
@@ -330,5 +354,28 @@ document.querySelector('.header__top-remove').addEventListener('click', () => {
     updateLocal();
     renderTask();
 });
+
+// Выполнение задачи
+const completedTask = (task) => {
+    task.querySelector('.task__completed').addEventListener('click', () => {
+        tasks[task.dataset.index].completed = !tasks[task.dataset.index].completed;
+
+        updateLocal();
+        renderTask();
+    });
+
+    if (tasks[task.dataset.index].completed) {
+        task.classList.add('task--completed');
+    } else {
+        task.classList.remove('task--completed');
+    };
+}
+
+// Сначала показывать активные задачи
+const filterTask = () => {
+    const activeTasks = tasks.length && tasks.filter(task => task.completed == false);
+    const completedTasks = tasks.length && tasks.filter(task => task.completed == true);
+    tasks = [...activeTasks, ...completedTasks];
+}
 
 renderTask();

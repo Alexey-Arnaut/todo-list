@@ -6,6 +6,14 @@
     }
 }
 
+.task--completed {
+    opacity: 0.5;
+
+    .task__completed {
+        background: #349eff;
+    }
+}
+
 .task__inner {
     display: flex;
     align-items: center;
@@ -40,10 +48,6 @@
     &:hover {
         background: #349eff;
     }
-}
-
-.task__completed--active {
-    background: #349eff;
 }
 
 .task__name {
@@ -85,7 +89,7 @@
     top: 0;
     right: 0;
     bottom: 0;
-    left: 0;    
+    left: 0;
     opacity: 0;
     pointer-events: none;
     transition: 0.5s;
@@ -278,7 +282,7 @@
 
 .tasks__none-bg {
     margin-bottom: 15px;
-    
+
     img {
         width: 300px;
     }
@@ -305,4 +309,4 @@
     &:active {
         bottom: -1px;
     }
-} 
+}
