@@ -27,6 +27,11 @@ document.querySelector('.create__task').addEventListener('click', event => {
             addName.value = '';
         };
     };
+    if (!document.querySelector('.create__task-priority-button').contains(event.target)) {
+        if (!document.querySelector('.create__task-priorities').contains(event.target)) {
+            document.querySelector('.create__task-priorities').classList.remove('create__task-priorities--active');
+        };
+    };
 });
 
 // Открыть выбор цвета
@@ -56,6 +61,42 @@ document.querySelector('.create__task-add').addEventListener('click', () => {
     addName.focus();
 });
 
+// Выбор приоритета
+const selectedPriority = () => {
+    document.querySelectorAll('.create__task-priority').forEach(priority => {
+        priority.addEventListener('click', () => {
+
+            document.querySelectorAll('.create__task-priority').forEach(priority => {
+                priority.classList.remove('create__task-priority--active');
+            });
+
+            priority.classList.add('create__task-priority--active');
+
+            if (priority.querySelector('.create__task-priority-selected') == null) {
+                taskPriority = '';
+                document.querySelector('.create__task-priority-selected').id = 'color-green';
+                document.querySelector('.create__task-priority-button .create__task-priority-title').innerHTML = 'Установить приоритет';
+            } else {
+                taskPriority = priority.querySelector('.create__task-priority-selected').id;
+                document.querySelector('.create__task-priority-selected').id = priority.querySelector('.create__task-priority-selected').id;
+                document.querySelector('.create__task-priority-button .create__task-priority-title').innerHTML = `Приоритет - ${priority.querySelector('.create__task-priority-title').innerHTML.toLocaleLowerCase()}`;
+            };
+
+            document.querySelector('.create__task-priorities').classList.remove('create__task-priorities--active');
+        });
+
+        document.querySelectorAll('.create__task-priority').forEach(priority => {
+            priority.classList.remove('create__task-priority--active');
+        });
+
+        document.querySelectorAll('.create__task-priority')[document.querySelectorAll('.create__task-priority').length - 1].classList.add('create__task-priority--active');
+
+        taskPriority = '';
+        document.querySelector('.create__task-priority-selected').id = 'color-green';
+        document.querySelector('.create__task-priority-button .create__task-priority-title').innerHTML = 'Установить приоритет';
+    });
+}
+
 // Создание задачи
 const createTask = () => {
     tasks.push({
@@ -69,7 +110,7 @@ const createTask = () => {
 }
 
 // Шаблон задачи
-const createTaskTemplate = (item, index) => {
+const createTaskTemplate = (task, index) => {
     return `
         <div class="task">
             <div class="task__inner">
@@ -81,7 +122,7 @@ const createTaskTemplate = (item, index) => {
                             fill="#4DD599" />
                     </svg>
                 </button>
-                <textarea class="task__name" rows="1" readonly>${item.name}</textarea>
+                <textarea class="task__name" rows="1" readonly>${task.name}</textarea>
                 <button class="task__button task__button-edit">
                     <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="pen"
                         class="svg-inline--fa fa-pen fa-w-16" role="img" xmlns="http://www.w3.org/2000/svg"
@@ -100,7 +141,7 @@ const createTaskTemplate = (item, index) => {
                         </path>
                     </svg>
                 </button>
-                <div class="task__priority" id="color-green"></div>
+                <div class="task__priority" id="${task.priority}"></div>
             </div>
             <div class="task__edit">
                 <div class="task__edit-wrapper">
@@ -147,6 +188,8 @@ const createTaskTemplate = (item, index) => {
 
 // Отображение задач
 const renderTask = () => {
+    selectedPriority();
+
     tasksList.innerHTML = '';
 
     if (tasks.length > 0) {
@@ -157,6 +200,8 @@ const renderTask = () => {
     } else {
         document.querySelector('.tasks__none').classList.add('tasks__none--active');
     };
+
+    document.querySelector('.header__bottom-all-task').innerHTML = document.querySelectorAll('.task').length;
 }
 
 renderTask();
