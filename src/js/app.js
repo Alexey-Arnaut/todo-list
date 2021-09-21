@@ -122,7 +122,7 @@ const createTaskTemplate = (task, index) => {
                             fill="#4DD599" />
                     </svg>
                 </button>
-                <textarea class="task__name" rows="1" readonly>${task.name}</textarea>
+                <textarea class="task__name" rows="1" readonly>${task.name.replace(/ +/g, ' ').trim()}</textarea>
                 <button class="task__button task__button-edit">
                     <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="pen"
                         class="svg-inline--fa fa-pen fa-w-16" role="img" xmlns="http://www.w3.org/2000/svg"
@@ -240,7 +240,7 @@ const editTask = (task) => {
         task.querySelector('.task__edit').classList.add('task__edit--active');
 
         task.querySelector('.task__edit-name').focus();
-        task.querySelector('.task__edit-name').value = tasks[task.dataset.index].name;
+        task.querySelector('.task__edit-name').value = task.querySelector('.task__name').value;
 
         if (tasks[task.dataset.index].priority == 'color-red') {
             task.querySelector('.task__edit-priority-button .task__edit-priority-title').innerHTML = 'Приоритет - высокий';
@@ -281,11 +281,11 @@ const editTask = (task) => {
 // Смена названия задачи
 const changeTaskName = (task) => {
     task.querySelector('.task__edit-name').addEventListener('change', () => {
-        if (task.querySelector('.task__edit-name').value.trim().length == 0) return task.querySelector('.task__edit-name').focus();
+        if (task.querySelector('.task__edit-name').value.replace(/ +/g, ' ').trim().length == 0) return task.querySelector('.task__edit-name').focus();
 
         tasks[task.dataset.index].name = task.querySelector('.task__edit-name').value;
         updateLocal();
-        task.querySelector('.task__name').value = tasks[task.dataset.index].name;
+        task.querySelector('.task__name').value = task.querySelector('.task__edit-name').value.replace(/ +/g, ' ').trim();
     });
 }
 

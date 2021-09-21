@@ -183,3 +183,18 @@ body {
 #color-green {
     background: #1BC47D;
 }
+
+.show {
+    animation: show .5s linear forwards;
+}
+
+@keyframes show {
+    0% {
+        transform: translateY(50px);
+        opacity: 0;
+    }
+    100% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
