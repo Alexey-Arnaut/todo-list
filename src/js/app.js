@@ -112,7 +112,7 @@ const createTask = () => {
 // Шаблон задачи
 const createTaskTemplate = (task, index) => {
     return `
-        <div class="task">
+        <div class="task" data-index="${index}">
             <div class="task__inner">
                 <button class="task__completed">
                     <svg width="15" height="11" viewBox="0 0 15 11" fill="none"
@@ -154,7 +154,7 @@ const createTaskTemplate = (task, index) => {
                         </button>
                         <div class="task__edit-priorities">
                             <h2 class="task__edit-priorities-title">Выберите приоритет</h2>
-                            <button class="task__edit-priority priority">
+                            <button class="task__edit-priority">
                                 <div class="task__edit-priority-selected" id="color-red"></div>
                                 <p class="task__edit-priority-title">Высокий</p>
                             </button>
@@ -167,6 +167,7 @@ const createTaskTemplate = (task, index) => {
                                 <p class="task__edit-priority-title">Низкий</p>
                             </button>
                             <button class="task__edit-priority task__edit-priority--active">
+                            <div class="task__edit-priority-selected" id=""></div>
                                 <p class="task__edit-priority-title">Нет приоритета</p>
                             </button>
                         </div>
@@ -202,6 +203,105 @@ const renderTask = () => {
     };
 
     document.querySelector('.header__bottom-all-task').innerHTML = document.querySelectorAll('.task').length;
+
+    document.querySelectorAll('.task').forEach(task => {
+        editTask(task);
+    });
+}
+
+// Редактирование задачи
+const editTask = (task) => {
+    task.querySelector('.task__button-edit').addEventListener('click', () => {
+        task.querySelector('.task__edit').classList.add('task__edit--active');
+
+        task.querySelector('.task__edit-name').focus();
+        task.querySelector('.task__edit-name').value = tasks[task.dataset.index].name;
+
+        if (tasks[task.dataset.index].priority == 'color-red') {
+            task.querySelector('.task__edit-priority-button .task__edit-priority-title').innerHTML = 'Приоритет - высокий';
+        } else if (tasks[task.dataset.index].priority == 'color-yellow') {
+            task.querySelector('.task__edit-priority-button .task__edit-priority-title').innerHTML = 'Приоритет - средний';
+        } else if (tasks[task.dataset.index].priority == 'color-green') {
+            task.querySelector('.task__edit-priority-button .task__edit-priority-title').innerHTML = 'Приоритет - низкий';
+        } else {
+            task.querySelector('.task__edit-priority-button .task__edit-priority-title').innerHTML = 'Установить приоритет';
+        };
+
+        if (tasks[task.dataset.index].priority == '') {
+            task.querySelector('.task__edit-priority-selected').id = 'color-green';
+        } else {
+            task.querySelector('.task__edit-priority-selected').id = tasks[task.dataset.index].priority;
+        };
+
+        changeTaskName(task);
+        changeTaskPriority(task);
+    });
+
+    task.querySelector('.task__edit').addEventListener('click', event => {
+        if (!task.querySelector('.task__edit-wrapper').contains(event.target)) {
+            if (task.querySelector('.task__edit-priorities').classList.contains('task__edit-priorities--active')) {
+                task.querySelector('.task__edit-priorities').classList.remove('task__edit-priorities--active');
+            } else {
+                task.querySelector('.task__edit').classList.remove('task__edit--active');
+            };
+        };
+        if (!task.querySelector('.task__edit-priority-button').contains(event.target)) {
+            if (!task.querySelector('.task__edit-priorities').contains(event.target)) {
+                task.querySelector('.task__edit-priorities').classList.remove('task__edit-priorities--active');
+            };
+        };
+    });
+}
+
+// Смена названия задачи
+const changeTaskName = (task) => {
+    task.querySelector('.task__edit-name').addEventListener('change', () => {
+        if (task.querySelector('.task__edit-name').value.trim().length == 0) return task.querySelector('.task__edit-name').focus();
+
+        tasks[task.dataset.index].name = task.querySelector('.task__edit-name').value;
+        updateLocal();
+        task.querySelector('.task__name').value = tasks[task.dataset.index].name;
+    });
+}
+
+// Смена приоритета задачи
+const changeTaskPriority = (task) => {
+    task.querySelector('.task__edit-priority-button').addEventListener('click', () => {
+        task.querySelector('.task__edit-priorities').classList.add('task__edit-priorities--active');
+
+        task.querySelectorAll('.task__edit-priority').forEach(priority => {
+            if (priority.querySelector('.task__edit-priority-selected').id == tasks[task.dataset.index].priority) {
+                priority.classList.add('task__edit-priority--active');
+            } else {
+                priority.classList.remove('task__edit-priority--active');
+            };
+
+            priority.addEventListener('click', () => {
+                task.querySelectorAll('.task__edit-priority').forEach(priority => {
+                    priority.classList.remove('task__edit-priority--active');
+                });
+                priority.classList.add('task__edit-priority--active');
+
+                tasks[task.dataset.index].priority = priority.querySelector('.task__edit-priority-selected').id;
+                updateLocal();
+                task.querySelector('.task__priority').id = tasks[task.dataset.index].priority;
+
+                if (tasks[task.dataset.index].priority == '') {
+                    task.querySelector('.task__edit-priority-selected').id = 'color-green';
+                } else {
+                    task.querySelector('.task__edit-priority-selected').id = tasks[task.dataset.index].priority;
+                };
+
+                if (priority.querySelector('.task__edit-priority-title').innerHTML.toLocaleLowerCase() == 'нет приоритета') {
+                    task.querySelector('.task__edit-priority-button .task__edit-priority-title').innerHTML = 'Установить приоритет';
+                } else {
+                    task.querySelector('.task__edit-priority-button .task__edit-priority-title').innerHTML = `Приоритет - ${priority.querySelector('.task__edit-priority-title').innerHTML.toLocaleLowerCase()}`;
+                };
+
+                task.querySelector('.task__edit-priorities').classList.remove('task__edit-priorities--active');
+            });
+        });
+    });
 }
 
 renderTask();
