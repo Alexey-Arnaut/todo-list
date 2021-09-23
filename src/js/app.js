@@ -2,7 +2,7 @@ let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
 
 let taskPriority = '';
 const tasksList = document.querySelector('.task-list');
-const addName = document.querySelector('.create__task-name');
+const addName = document.querySelector('.create__form-name');
 
 const updateLocal = () => {
     localStorage.setItem('tasks', JSON.stringify(tasks));
@@ -11,32 +11,32 @@ const updateLocal = () => {
 // Открытие формы добавления задачи
 document.querySelectorAll('.open__form').forEach(openFolderButton => {
     openFolderButton.addEventListener('click', () => {
-        document.querySelector('.create__task').classList.add('create__task--active');
+        document.querySelector('.create-wrapper').classList.add('wrap--active');
 
         addName.focus();
     });
 });
 
 // Закрытие формы добавления задачи
-document.querySelector('.create__task').addEventListener('click', event => {
-    if (!document.querySelector('.create__task-wrapper').contains(event.target)) {
-        if (document.querySelector('.create__task-priorities').classList.contains('create__task-priorities--active')) {
-            document.querySelector('.create__task-priorities').classList.remove('create__task-priorities--active');
+document.querySelector('.create-wrapper').addEventListener('click', event => {
+    if (!document.querySelector('.create-inner').contains(event.target)) {
+        if (document.querySelector('.create__form-priorities').classList.contains('priorities--active')) {
+            document.querySelector('.create__form-priorities').classList.remove('priorities--active');
         } else {
-            document.querySelector('.create__task').classList.remove('create__task--active');
+            document.querySelector('.create-wrapper').classList.remove('wrap--active');
             addName.value = '';
         };
     };
-    if (!document.querySelector('.create__task-priority-button').contains(event.target)) {
-        if (!document.querySelector('.create__task-priorities').contains(event.target)) {
-            document.querySelector('.create__task-priorities').classList.remove('create__task-priorities--active');
+    if (!document.querySelector('.create__form-button-priorities').contains(event.target)) {
+        if (!document.querySelector('.create__form-priorities').contains(event.target)) {
+            document.querySelector('.create__form-priorities').classList.remove('priorities--active');
         };
     };
 });
 
 // Открыть выбор цвета
-document.querySelector('.create__task-priority-button').addEventListener('click', () => {
-    document.querySelector('.create__task-priorities').classList.add('create__task-priorities--active');
+document.querySelector('.create__form-button-priorities').addEventListener('click', () => {
+    document.querySelector('.create__form-priorities').classList.add('priorities--active');
 });
 
 // Открыть удаление всех задач
@@ -52,8 +52,20 @@ document.addEventListener('click', event => {
 });
 
 // Добавление задачи
-document.querySelector('.create__task-add').addEventListener('click', () => {
-    if (addName.value.trim().length == 0) return addName.focus();
+document.querySelector('.create__form-button-add').addEventListener('click', () => {
+
+    if (addName.value.replace(/ +/g, ' ').trim().length == 0) {
+        addName.focus();
+        addName.classList.add('error');
+        document.querySelector('.create__form-button-add').disabled = true;
+
+        setTimeout(() => {
+            addName.classList.remove('error');
+            document.querySelector('.create__form-button-add').disabled = false;
+        }, 500);
+
+        return;
+    };
 
     createTask();
 
@@ -63,37 +75,39 @@ document.querySelector('.create__task-add').addEventListener('click', () => {
 
 // Выбор приоритета
 const selectedPriority = () => {
-    document.querySelectorAll('.create__task-priority').forEach(priority => {
+    document.querySelectorAll('.create__form-priority').forEach(priority => {
         priority.addEventListener('click', () => {
 
-            document.querySelectorAll('.create__task-priority').forEach(priority => {
-                priority.classList.remove('create__task-priority--active');
+            document.querySelectorAll('.create__form-priority').forEach(priority => {
+                priority.classList.remove('priority--active');
             });
 
-            priority.classList.add('create__task-priority--active');
+            priority.classList.add('priority--active');
 
-            if (priority.querySelector('.create__task-priority-selected') == null) {
+            if (priority.querySelector('.create__form-priority-selected').id == 'color-white') {
                 taskPriority = '';
-                document.querySelector('.create__task-priority-selected').id = 'color-green';
-                document.querySelector('.create__task-priority-button .create__task-priority-title').innerHTML = 'Установить приоритет';
+                document.querySelector('.create__form-button-priorities-selected').id = 'color-white';
+                document.querySelector('.create__form-button-priorities span').innerHTML = 'Установить приоритет';
             } else {
-                taskPriority = priority.querySelector('.create__task-priority-selected').id;
-                document.querySelector('.create__task-priority-selected').id = priority.querySelector('.create__task-priority-selected').id;
-                document.querySelector('.create__task-priority-button .create__task-priority-title').innerHTML = `Приоритет - ${priority.querySelector('.create__task-priority-title').innerHTML.toLocaleLowerCase()}`;
+                taskPriority = priority.querySelector('.create__form-priority-selected').id;
+                document.querySelector('.create__form-button-priorities-selected').id = priority.querySelector('.create__form-priority-selected').id;
+                document.querySelector('.create__form-button-priorities span').innerHTML = `Приоритет - ${priority.querySelector('span').innerHTML.toLocaleLowerCase()}`;
             };
 
-            document.querySelector('.create__task-priorities').classList.remove('create__task-priorities--active');
+            console.log(priority);
+
+            document.querySelector('.create__form-priorities').classList.remove('priorities--active');
         });
 
-        document.querySelectorAll('.create__task-priority').forEach(priority => {
-            priority.classList.remove('create__task-priority--active');
+        document.querySelectorAll('.create__form-priority').forEach(priority => {
+            priority.classList.remove('priority--active');
         });
 
-        document.querySelectorAll('.create__task-priority')[document.querySelectorAll('.create__task-priority').length - 1].classList.add('create__task-priority--active');
+        document.querySelectorAll('.create__form-priority')[document.querySelectorAll('.create__form-priority').length - 1].classList.add('priority--active');
 
         taskPriority = '';
-        document.querySelector('.create__task-priority-selected').id = 'color-green';
-        document.querySelector('.create__task-priority-button .create__task-priority-title').innerHTML = 'Установить приоритет';
+        document.querySelector('.create__form-button-priorities-selected').id = 'color-white';
+        document.querySelector('.create__form-button-priorities span').innerHTML = 'Установить приоритет';
     });
 }
 
@@ -122,7 +136,8 @@ const createTaskTemplate = (task, index) => {
                             fill="#4DD599" />
                     </svg>
                 </button>
-                <textarea class="task__name" rows="1" readonly>${task.name.replace(/ +/g, ' ').trim()}</textarea>
+                <textarea class="task__name" rows="1"
+                    readonly>${task.name.replace(/ +/g, ' ').trim()}</textarea>
                 <button class="task__button task__button-edit">
                     <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="pen"
                         class="svg-inline--fa fa-pen fa-w-16" role="img" xmlns="http://www.w3.org/2000/svg"
@@ -143,43 +158,46 @@ const createTaskTemplate = (task, index) => {
                 </button>
                 <div class="task__priority" id="${task.priority}"></div>
             </div>
-            <div class="task__edit">
-                <div class="task__edit-wrapper">
-                    <div class="task__edit-inner">
+            <div class="task__edit wrap">
+                <div class="task__edit-inner inner">
+                    <div class="task__edit-container container">
                         <h2 class="task__edit-title title">Редактировать задачу</h2>
-                        <textarea class="task__edit-name" rows="4" placeholder="Название задачи"></textarea>
-                        <button class="task__edit-priority-button">
-                            <div class="task__edit-priority-selected" id="color-green"></div>
-                            <p class="task__edit-priority-title">Установить приоритет</p>
-                        </button>
-                        <div class="task__edit-priorities">
-                            <h2 class="task__edit-priorities-title">Выберите приоритет</h2>
-                            <button class="task__edit-priority">
-                                <div class="task__edit-priority-selected" id="color-red"></div>
-                                <p class="task__edit-priority-title">Высокий</p>
+                        <div class="task__edit-form form">
+                            <textarea class="task__edit-name name" rows="4"
+                                placeholder="Название задачи"></textarea>
+                            <button class="task__edit-priority-button button-priorities button">
+                                <div class="task__edit-priority-selected selected" id="color-white"></div>
+                                <span>Установить приоритет</span>
                             </button>
-                            <button class="task__edit-priority">
-                                <div class="task__edit-priority-selected" id="color-yellow"></div>
-                                <p class="task__edit-priority-title">Средний</p>
-                            </button>
-                            <button class="task__edit-priority">
-                                <div class="task__edit-priority-selected" id="color-green"></div>
-                                <p class="task__edit-priority-title">Низкий</p>
-                            </button>
-                            <button class="task__edit-priority task__edit-priority--active">
-                            <div class="task__edit-priority-selected" id=""></div>
-                                <p class="task__edit-priority-title">Нет приоритета</p>
+                            <div class="task__edit-priorities priorities">
+                                <h2 class="task__edit-priorities-title title">Выберите приоритет</h2>
+                                <button class="task__edit-priority priority">
+                                    <div class="task__edit-priority-selected selected" id="color-red"></div>
+                                    <span>Высокий</span>
+                                </button>
+                                <button class="task__edit-priority priority">
+                                    <div class="task__edit-priority-selected selected" id="color-yellow"></div>
+                                    <span>Средний</span>
+                                </button>
+                                <button class="task__edit-priority priority">
+                                    <div class="task__edit-priority-selected selected" id="color-green"></div>
+                                    <span>Низкий</span>
+                                </button>
+                                <button class="task__edit-priority priority">
+                                    <div class="task__edit-priority-selected selected" id="color-white"></div>
+                                    <span>Нет приоритета</span>
+                                </button>
+                            </div>
+                            <button class="task__edit-remove">
+                                <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="trash"
+                                    class="svg-inline--fa fa-trash fa-w-14" role="img"
+                                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                                    <path fill="currentColor"
+                                        d="M432 32H312l-9.4-18.7A24 24 0 0 0 281.1 0H166.8a23.72 23.72 0 0 0-21.4 13.3L136 32H16A16 16 0 0 0 0 48v32a16 16 0 0 0 16 16h416a16 16 0 0 0 16-16V48a16 16 0 0 0-16-16zM53.2 467a48 48 0 0 0 47.9 45h245.8a48 48 0 0 0 47.9-45L416 128H32z">
+                                    </path>
+                                </svg>
                             </button>
                         </div>
-                        <button class="task__edit-remove">
-                            <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="trash"
-                                class="svg-inline--fa fa-trash fa-w-14" role="img"
-                                xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
-                                <path fill="currentColor"
-                                    d="M432 32H312l-9.4-18.7A24 24 0 0 0 281.1 0H166.8a23.72 23.72 0 0 0-21.4 13.3L136 32H16A16 16 0 0 0 0 48v32a16 16 0 0 0 16 16h416a16 16 0 0 0 16-16V48a16 16 0 0 0-16-16zM53.2 467a48 48 0 0 0 47.9 45h245.8a48 48 0 0 0 47.9-45L416 128H32z">
-                                </path>
-                            </svg>
-                        </button>
                     </div>
                 </div>
             </div>
@@ -211,7 +229,7 @@ const renderTask = () => {
         completedTask(task);
 
         if (task.classList.contains('task--completed')) {
-            task.querySelector('.task__button-edit').disabled = 'true';
+            task.querySelector('.task__button-edit').disabled = true;
         };
     });
 
@@ -237,23 +255,23 @@ const calcPercent = (num1, num2) => {
 // Редактирование задачи
 const editTask = (task) => {
     task.querySelector('.task__button-edit').addEventListener('click', () => {
-        task.querySelector('.task__edit').classList.add('task__edit--active');
+        task.querySelector('.task__edit').classList.add('wrap--active');
 
         task.querySelector('.task__edit-name').focus();
         task.querySelector('.task__edit-name').value = task.querySelector('.task__name').value;
 
         if (tasks[task.dataset.index].priority == 'color-red') {
-            task.querySelector('.task__edit-priority-button .task__edit-priority-title').innerHTML = 'Приоритет - высокий';
+            task.querySelector('.task__edit-priority-button span').innerHTML = 'Приоритет - высокий';
         } else if (tasks[task.dataset.index].priority == 'color-yellow') {
-            task.querySelector('.task__edit-priority-button .task__edit-priority-title').innerHTML = 'Приоритет - средний';
+            task.querySelector('.task__edit-priority-button span').innerHTML = 'Приоритет - средний';
         } else if (tasks[task.dataset.index].priority == 'color-green') {
-            task.querySelector('.task__edit-priority-button .task__edit-priority-title').innerHTML = 'Приоритет - низкий';
+            task.querySelector('.task__edit-priority-button span').innerHTML = 'Приоритет - низкий';
         } else {
-            task.querySelector('.task__edit-priority-button .task__edit-priority-title').innerHTML = 'Установить приоритет';
+            task.querySelector('.task__edit-priority-button span').innerHTML = 'Установить приоритет';
         };
 
         if (tasks[task.dataset.index].priority == '') {
-            task.querySelector('.task__edit-priority-selected').id = 'color-green';
+            task.querySelector('.task__edit-priority-selected').id = 'color-white';
         } else {
             task.querySelector('.task__edit-priority-selected').id = tasks[task.dataset.index].priority;
         };
@@ -263,16 +281,16 @@ const editTask = (task) => {
     });
 
     task.querySelector('.task__edit').addEventListener('click', event => {
-        if (!task.querySelector('.task__edit-wrapper').contains(event.target)) {
-            if (task.querySelector('.task__edit-priorities').classList.contains('task__edit-priorities--active')) {
-                task.querySelector('.task__edit-priorities').classList.remove('task__edit-priorities--active');
+        if (!task.querySelector('.task__edit-inner').contains(event.target)) {
+            if (task.querySelector('.task__edit-priorities').classList.contains('priorities--active')) {
+                task.querySelector('.task__edit-priorities').classList.remove('priorities--active');
             } else {
-                task.querySelector('.task__edit').classList.remove('task__edit--active');
+                task.querySelector('.task__edit').classList.remove('wrap--active');
             };
         };
         if (!task.querySelector('.task__edit-priority-button').contains(event.target)) {
             if (!task.querySelector('.task__edit-priorities').contains(event.target)) {
-                task.querySelector('.task__edit-priorities').classList.remove('task__edit-priorities--active');
+                task.querySelector('.task__edit-priorities').classList.remove('priorities--active');
             };
         };
     });
@@ -280,8 +298,21 @@ const editTask = (task) => {
 
 // Смена названия задачи
 const changeTaskName = (task) => {
+
+    let postName = task.querySelector('.task__edit-name').value;
+
     task.querySelector('.task__edit-name').addEventListener('change', () => {
-        if (task.querySelector('.task__edit-name').value.replace(/ +/g, ' ').trim().length == 0) return task.querySelector('.task__edit-name').focus();
+        if (task.querySelector('.task__edit-name').value.replace(/ +/g, ' ').trim().length == 0) {
+            task.querySelector('.task__edit-name').focus();
+            task.querySelector('.task__edit-name').classList.add('error');
+
+            setTimeout(() => {
+                task.querySelector('.task__edit-name').classList.remove('error');
+                task.querySelector('.task__edit-name').value = postName;
+            }, 500);
+
+            return;
+        }
 
         tasks[task.dataset.index].name = task.querySelector('.task__edit-name').value;
         updateLocal();
@@ -292,38 +323,43 @@ const changeTaskName = (task) => {
 // Смена приоритета задачи
 const changeTaskPriority = (task) => {
     task.querySelector('.task__edit-priority-button').addEventListener('click', () => {
-        task.querySelector('.task__edit-priorities').classList.add('task__edit-priorities--active');
+        task.querySelector('.task__edit-priorities').classList.add('priorities--active');
 
         task.querySelectorAll('.task__edit-priority').forEach(priority => {
-            if (priority.querySelector('.task__edit-priority-selected').id == tasks[task.dataset.index].priority) {
-                priority.classList.add('task__edit-priority--active');
+            if (tasks[task.dataset.index].priority == priority.querySelector('.task__edit-priority-selected').id) {
+                priority.classList.add('priority--active');
+            } else if (tasks[task.dataset.index].priority == '') {
+                task.querySelectorAll('.task__edit-priority')[task.querySelectorAll('.task__edit-priority').length - 1].classList.add('priority--active');
             } else {
-                priority.classList.remove('task__edit-priority--active');
+                priority.classList.remove('priority--active');
             };
 
             priority.addEventListener('click', () => {
                 task.querySelectorAll('.task__edit-priority').forEach(priority => {
-                    priority.classList.remove('task__edit-priority--active');
+                    priority.classList.remove('priority--active');
                 });
-                priority.classList.add('task__edit-priority--active');
+                priority.classList.add('priority--active');
 
                 tasks[task.dataset.index].priority = priority.querySelector('.task__edit-priority-selected').id;
-                updateLocal();
+
                 task.querySelector('.task__priority').id = tasks[task.dataset.index].priority;
 
-                if (tasks[task.dataset.index].priority == '') {
-                    task.querySelector('.task__edit-priority-selected').id = 'color-green';
+                if (priority.querySelector('.task__edit-priority-selected').id == 'color-white') {
+                    task.querySelector('.task__edit-priority-selected').id = 'color-white';
+                    task.querySelector('.task__priority').id = '';
+                    tasks[task.dataset.index].priority = '';
                 } else {
                     task.querySelector('.task__edit-priority-selected').id = tasks[task.dataset.index].priority;
                 };
 
-                if (priority.querySelector('.task__edit-priority-title').innerHTML.toLocaleLowerCase() == 'нет приоритета') {
-                    task.querySelector('.task__edit-priority-button .task__edit-priority-title').innerHTML = 'Установить приоритет';
+                if (priority.querySelector('span').innerHTML.toLocaleLowerCase() == 'нет приоритета') {
+                    task.querySelector('.task__edit-priority-button span').innerHTML = 'Установить приоритет';
                 } else {
-                    task.querySelector('.task__edit-priority-button .task__edit-priority-title').innerHTML = `Приоритет - ${priority.querySelector('.task__edit-priority-title').innerHTML.toLocaleLowerCase()}`;
+                    task.querySelector('.task__edit-priority-button span').innerHTML = `Приоритет - ${priority.querySelector('span').innerHTML.toLocaleLowerCase()}`;
                 };
 
-                task.querySelector('.task__edit-priorities').classList.remove('task__edit-priorities--active');
+                task.querySelector('.task__edit-priorities').classList.remove('priorities--active');
+                updateLocal();
             });
         });
     });
@@ -332,27 +368,86 @@ const changeTaskPriority = (task) => {
 // Удаление задачи
 const removeTask = (task) => {
     task.querySelector('.task__button-remove').addEventListener('click', () => {
-        tasks.splice([task.dataset.index], 1);
-        updateLocal();
-        renderTask();
+        task.querySelector('.task__inner').classList.add('task--hide');
+
+        document.querySelectorAll('.task').forEach(task => {
+            task.querySelector('.task__button-remove').disabled = true;
+        })
+
+        setTimeout(() => {
+            tasks.splice([task.dataset.index], 1);
+            updateLocal();
+            renderTask();
+
+            document.querySelectorAll('.task').forEach(task => {
+                task.querySelector('.task__button-remove').disabled = false;
+            });
+        }, 1000);
     });
 
     task.querySelector('.task__edit-remove').addEventListener('click', () => {
         tasks.splice(task.dataset.index, 1);
         updateLocal();
-        task.querySelector('.task__edit').classList.remove('task__edit--active');
+        task.querySelector('.task__edit').classList.remove('wrap--active');
+
+        document.querySelectorAll('.task').forEach(task => {
+            task.querySelector('.task__button-remove').disabled = true;
+        })
+
+        setTimeout(() => {
+            task.querySelector('.task__inner').classList.add('task--hide');
+        }, 500);
 
         setTimeout(() => {
             renderTask();
-        }, 500);
+
+            document.querySelectorAll('.task').forEach(task => {
+                task.querySelector('.task__button-remove').disabled = false;
+            });
+        }, 1500);
     });
 }
 
 // Удаление всех задач
 document.querySelector('.header__top-remove').addEventListener('click', () => {
-    tasks.splice(0, document.querySelectorAll('.task').length);
-    updateLocal();
-    renderTask();
+
+    document.querySelector('.modal').classList.add('wrap--active');
+
+    if (tasks.length == 0) {
+        document.querySelector('.moda__title').innerHTML = 'У вас еще нет задач.';
+        document.querySelector('.moda__buttons').style.display = 'none';
+
+        setTimeout(() => {
+            document.querySelector('.modal').classList.remove('wrap--active');
+        }, 1000);
+    } else {
+        document.querySelector('.moda__title').innerHTML = 'Вы уверены, что хотите удалить все задачи?';
+        document.querySelector('.moda__buttons').style.display = 'flex';
+
+        tasks.splice(0, document.querySelectorAll('.task').length);
+        updateLocal();
+
+        document.querySelector('.modal__button-confirm').addEventListener('click', () => {
+            document.querySelectorAll('.task').forEach(task => {
+                task.querySelector('.task__inner').classList.add('task--hide');
+            });
+
+            setTimeout(() => {
+                renderTask();
+            }, 1000);
+
+            document.querySelector('.modal').classList.remove('wrap--active');
+        });
+        document.querySelector('.modal__button-cancel').addEventListener('click', () => {
+            document.querySelector('.modal').classList.remove('wrap--active');
+        });
+
+        document.querySelector('.modal').addEventListener('click', event => {
+            if (!document.querySelector('.modal-inner').contains(event.target)) {
+                document.querySelector('.modal').classList.remove('wrap--active');
+            };
+        });
+    };
 });
 
 // Выполнение задачи
