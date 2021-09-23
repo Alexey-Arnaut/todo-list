@@ -423,31 +423,31 @@ document.querySelector('.header__top-remove').addEventListener('click', () => {
     } else {
         document.querySelector('.moda__title').innerHTML = 'Вы уверены, что хотите удалить все задачи?';
         document.querySelector('.moda__buttons').style.display = 'flex';
+    };
+
+    document.querySelector('.modal__button-confirm').addEventListener('click', () => {
+        document.querySelectorAll('.task').forEach(task => {
+            task.querySelector('.task__inner').classList.add('task--hide');
+        });
 
         tasks.splice(0, document.querySelectorAll('.task').length);
         updateLocal();
 
-        document.querySelector('.modal__button-confirm').addEventListener('click', () => {
-            document.querySelectorAll('.task').forEach(task => {
-                task.querySelector('.task__inner').classList.add('task--hide');
-            });
+        setTimeout(() => {
+            renderTask();
+        }, 1000);
 
-            setTimeout(() => {
-                renderTask();
-            }, 1000);
+        document.querySelector('.modal').classList.remove('wrap--active');
+    });
+    document.querySelector('.modal__button-cancel').addEventListener('click', () => {
+        document.querySelector('.modal').classList.remove('wrap--active');
+    });
 
+    document.querySelector('.modal').addEventListener('click', event => {
+        if (!document.querySelector('.modal-inner').contains(event.target)) {
             document.querySelector('.modal').classList.remove('wrap--active');
-        });
-        document.querySelector('.modal__button-cancel').addEventListener('click', () => {
-            document.querySelector('.modal').classList.remove('wrap--active');
-        });
-
-        document.querySelector('.modal').addEventListener('click', event => {
-            if (!document.querySelector('.modal-inner').contains(event.target)) {
-                document.querySelector('.modal').classList.remove('wrap--active');
-            };
-        });
-    };
+        };
+    });
 });
 
 // Выполнение задачи
