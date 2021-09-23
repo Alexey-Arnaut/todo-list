@@ -373,6 +373,10 @@ body {
   bottom: -1px;
 }
 
+.task-list {
+  overflow: hidden;
+}
+
 .task {
   margin-top: 15px;
 }
@@ -394,19 +398,43 @@ body {
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
-  background: #2C343F;
+  background: #2c343f;
   padding: 10px;
   border-radius: 10px;
-  -webkit-transition: 0.5s;
-  transition: 0.5s;
+  -webkit-transition: 1s;
+  transition: 1s;
   position: relative;
   cursor: pointer;
+  overflow: hidden;
 }
 .task__inner:hover {
   background: rgba(52, 158, 255, 0.2);
 }
 .task__inner:hover .task__button {
   opacity: 1;
+}
+
+.task__inner-bg {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  -webkit-transition: 0.5s;
+  transition: 0.5s;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  overflow: hidden;
+  width: 0;
+}
+.task__inner-bg svg {
+  width: 20px;
+  height: 20px;
 }
 
 .task__completed {
@@ -421,12 +449,12 @@ body {
   -webkit-box-pack: center;
       -ms-flex-pack: center;
           justify-content: center;
-  border: 2px solid #FFFFFF;
+  border: 2px solid #ffffff;
   border-radius: 50%;
   margin-right: 10px;
 }
 .task__completed path {
-  fill: #FFFFFF;
+  fill: #ffffff;
 }
 .task__completed:hover {
   background: #349eff;
@@ -522,30 +550,39 @@ body {
 @-webkit-keyframes task-hide {
   0% {
     right: 0;
-    background-color: #E44F4F;
+    background-color: #e44f4f;
   }
   50% {
     right: 50vw;
-    background-color: #E44F4F;
+    background-color: #e44f4f;
   }
   100% {
     right: -150vw;
-    background-color: #E44F4F;
+    background-color: #e44f4f;
   }
 }
 
 @keyframes task-hide {
   0% {
     right: 0;
-    background-color: #E44F4F;
+    background-color: #e44f4f;
   }
   50% {
     right: 50vw;
-    background-color: #E44F4F;
+    background-color: #e44f4f;
   }
   100% {
     right: -150vw;
-    background-color: #E44F4F;
+    background-color: #e44f4f;
+  }
+}
+@media screen and (max-width: 425px) {
+  .task__button-edit {
+    opacity: 1;
+  }
+
+  .task__button-remove {
+    display: none;
   }
 }
 .wrap {
@@ -725,7 +762,7 @@ body {
   width: 100%;
   margin: 0 auto;
   border-radius: 60px 60px 0 0;
-  padding: 35px 15px 15px;
+  padding: 15px;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -743,15 +780,6 @@ body {
   -webkit-transition: 0.5s;
   transition: 0.5s;
   z-index: 1;
-}
-.priorities::before {
-  position: absolute;
-  content: "";
-  width: 60px;
-  height: 6px;
-  background: #212832;
-  border-radius: 10px;
-  top: 10px;
 }
 
 .priorities--active {

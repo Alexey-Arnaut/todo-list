@@ -1,155 +1,186 @@
-.task {
-    margin-top: 15px;
+.task-list {
+    overflow: hidden;
+  }
 
-    &:first-child {
-        margin-top: 0;
-    }
+.task {
+  margin-top: 15px;
+
+  &:first-child {
+    margin-top: 0;
+  }
 }
 
 .task--completed {
-    opacity: 0.5;
+  opacity: 0.5;
 
-    .task__completed {
-        background: #349eff;
-    }
+  .task__completed {
+    background: #349eff;
+  }
 }
 
 .task__inner {
-    display: flex;
-    align-items: center;
-    background: #2C343F;
-    padding: 10px;
-    border-radius: 10px;
-    transition: 0.5s;
-    position: relative;
-    cursor: pointer;
+  display: flex;
+  align-items: center;
+  background: #2c343f;
+  padding: 10px;
+  border-radius: 10px;
+  transition: 1s;
+  position: relative;
+  cursor: pointer;
+  overflow: hidden;
 
-    &:hover {
-        background: rgb(#349eff, 0.2);
+  &:hover {
+    background: rgb(#349eff, 0.2);
 
-        .task__button {
-            opacity: 1;
-        }
+    .task__button {
+      opacity: 1;
     }
+  }
+}
+
+.task__inner-bg {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  transition: 0.5s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  width: 0;
+
+  svg {
+    width: 20px;
+    height: 20px;
+  }
 }
 
 .task__completed {
-    min-width: 30px;
-    height: 30px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: 2px solid #FFFFFF;
-    border-radius: 50%;
-    margin-right: 10px;
+  min-width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid #ffffff;
+  border-radius: 50%;
+  margin-right: 10px;
 
-    path {
-        fill: #FFFFFF;
-    }
+  path {
+    fill: #ffffff;
+  }
 
-    &:hover {
-        background: #349eff;
-    }
+  &:hover {
+    background: #349eff;
+  }
 }
 
 .task__name {
-    font-size: 18px;
-    width: 100%;
+  font-size: 18px;
+  width: 100%;
 }
 
 .task__button {
+  height: 20px;
+  opacity: 0;
+
+  svg {
+    width: 20px;
     height: 20px;
-    opacity: 0;
+  }
 
-    svg {
-        width: 20px;
-        height: 20px;
+  &:hover {
+    path {
+      fill: #349eff;
     }
-
-    &:hover {
-
-        path {
-            fill: #349eff;
-        }
-    }
+  }
 }
 
 .task__button-edit {
-    margin: 0 5px;
+  margin: 0 5px;
 }
 
 .task__priority {
-    min-width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    margin-left: 5px;
+  min-width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  margin-left: 5px;
 }
 
 .tasks__none {
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    display: none;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding-top: 200px;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding-top: 200px;
 }
 
 .tasks__none--active {
-    display: flex;
+  display: flex;
 }
 
 .tasks__none-bg {
-    margin-bottom: 15px;
+  margin-bottom: 15px;
 
-    img {
-        width: 300px;
-    }
+  img {
+    width: 300px;
+  }
 }
 
 .tasks__none-title {
-    font-size: 18px;
-    text-align: center;
-    line-height: 1.5em;
+  font-size: 18px;
+  text-align: center;
+  line-height: 1.5em;
 }
 
 .tasks__none-button {
-    margin-top: 15px;
-    font-size: 16px;
-    padding: 10px 30px;
-    background: #349eff;
-    border-radius: 10px;
-    position: relative;
+  margin-top: 15px;
+  font-size: 16px;
+  padding: 10px 30px;
+  background: #349eff;
+  border-radius: 10px;
+  position: relative;
 
-    &:hover {
-        background: darken(#349eff, 10%);
-    }
+  &:hover {
+    background: darken(#349eff, 10%);
+  }
 
-    &:active {
-        bottom: -1px;
-    }
+  &:active {
+    bottom: -1px;
+  }
 }
 
 .task--hide {
-    animation: task-hide 1s forwards;
+  animation: task-hide 1s forwards;
 }
 
 @keyframes task-hide {
-    0% {
-        right: 0;
-        background-color: #E44F4F;
-    }
+  0% {
+    right: 0;
+    background-color: #e44f4f;
+  }
 
-    50% {
-        right: 50vw;
-        background-color: #E44F4F;
-    }
+  50% {
+    right: 50vw;
+    background-color: #e44f4f;
+  }
 
-    100% {
-        right: -150vw;
-        background-color: #E44F4F;
-    }
+  100% {
+    right: -150vw;
+    background-color: #e44f4f;
+  }
+}
+
+@media screen and (max-width: 425px) {
+  .task__button-edit {
+    opacity: 1;
+  }
+
+  .task__button-remove {
+    display: none;
+  }
 }

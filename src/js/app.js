@@ -94,8 +94,6 @@ const selectedPriority = () => {
                 document.querySelector('.create__form-button-priorities span').innerHTML = `Приоритет - ${priority.querySelector('span').innerHTML.toLocaleLowerCase()}`;
             };
 
-            console.log(priority);
-
             document.querySelector('.create__form-priorities').classList.remove('priorities--active');
         });
 
@@ -123,11 +121,97 @@ const createTask = () => {
     updateLocal();
 }
 
+// Удаление и выполнение задач по свайпу
+let initalPosition = null;
+let diff = null;
+let diffWidth = '';
+
+const touchStart = (event) => {
+    initalPosition = event.touches[0].clientX;
+}
+
+const touchMove = (task, event) => {
+    const currentPosition = event.touches[0].clientX;
+    diff = currentPosition - initalPosition;
+    diffWidth = String(diff).split('-').join('');
+
+    if (diff > 50 || diff < -50) {
+        if (currentPosition < initalPosition) {
+            task.querySelector('.task__inner-bg').style.left = '';
+            task.querySelector('.task__inner-bg').style.right = 0;
+            task.querySelector('.task__inner-bg').style.background = '#E44F4F';
+            task.querySelector('.task__inner-bg').style.borderRadius = '30px 0 0 30px';
+            task.querySelector('.task__inner-bg').innerHTML =
+                `
+                <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="trash"
+                    class="svg-inline--fa fa-trash fa-w-14" role="img" xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 448 512">
+                    <path fill="currentColor"
+                        d="M432 32H312l-9.4-18.7A24 24 0 0 0 281.1 0H166.8a23.72 23.72 0 0 0-21.4 13.3L136 32H16A16 16 0 0 0 0 48v32a16 16 0 0 0 16 16h416a16 16 0 0 0 16-16V48a16 16 0 0 0-16-16zM53.2 467a48 48 0 0 0 47.9 45h245.8a48 48 0 0 0 47.9-45L416 128H32z">
+                    </path>
+                </svg>
+                `
+        } else {
+            task.querySelector('.task__inner-bg').style.left = 0;
+            task.querySelector('.task__inner-bg').style.right = '';
+            task.querySelector('.task__inner-bg').style.background = '#349eff';
+            task.querySelector('.task__inner-bg').style.borderRadius = '0 30px 30px 0';
+            task.querySelector('.task__inner-bg').innerHTML =
+                `
+                <svg width="15" height="11" viewBox="0 0 15 11" fill="none"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path
+                        d="M5.09467 10.784L0.219661 5.98988C-0.0732203 5.70186 -0.0732203 5.23487 0.219661 4.94682L1.2803 3.90377C1.57318 3.61572 2.04808 3.61572 2.34096 3.90377L5.625 7.13326L12.659 0.216014C12.9519 -0.0720048 13.4268 -0.0720048 13.7197 0.216014L14.7803 1.25907C15.0732 1.54709 15.0732 2.01408 14.7803 2.30213L6.15533 10.784C5.86242 11.072 5.38755 11.072 5.09467 10.784Z"
+                        fill="#4DD599" />
+                </svg>
+                `
+        }
+
+        if (diff > 150 || diff < -150) {
+            return
+        } else {
+            task.querySelector('.task__inner').style.transform = `translate(${diff}px)`;
+            task.querySelector('.task__inner-bg').style.width = parseInt(diffWidth) - 15 + 'px';
+        };
+    } else {
+        task.querySelector('.task__inner').style.transform = 'translate(0px)';
+        task.querySelector('.task__inner-bg').style.width = 0;
+    }
+}
+
+const touchEnd = (task) => {
+    task.querySelector('.task__inner').style.transform = 'translate(0px)';
+    task.querySelector('.task__inner-bg').style.width = 0;
+
+    if (diff >= 150) {
+        tasks[task.dataset.index].completed = !tasks[task.dataset.index].completed;
+        completedTask(task);
+
+        setTimeout(() => {
+            renderTask();
+        }, 1000);
+    };
+    if (diff <= -150) {
+        tasks.splice(task.dataset.index, 1);
+        task.querySelector('.task__inner').classList.add('task--hide');
+
+        setTimeout(() => {
+            renderTask();
+        }, 1000);
+    };
+
+    updateLocal();
+
+    initalPosition = null;
+    diff = null;
+}
+
 // Шаблон задачи
 const createTaskTemplate = (task, index) => {
     return `
         <div class="task" data-index="${index}">
             <div class="task__inner">
+                <div class="task__inner-bg"></div>
                 <button class="task__completed">
                     <svg width="15" height="11" viewBox="0 0 15 11" fill="none"
                         xmlns="http://www.w3.org/2000/svg">
@@ -227,6 +311,14 @@ const renderTask = () => {
         editTask(task);
         removeTask(task);
         completedTask(task);
+
+        task.querySelector('.task__inner').addEventListener('touchstart', touchStart, {
+            passive: true
+        });
+        task.querySelector('.task__inner').addEventListener('touchmove', (event) => touchMove(task, event), {
+            passive: true
+        });
+        task.querySelector('.task__inner').addEventListener('touchend', () => touchEnd(task));
 
         if (task.classList.contains('task--completed')) {
             task.querySelector('.task__button-edit').disabled = true;
