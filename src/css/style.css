@@ -152,6 +152,8 @@ path {
 * {
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
+  -ms-touch-action: none;
+      touch-action: none;
 }
 *::-webkit-scrollbar {
   width: 0;
@@ -401,8 +403,6 @@ body {
   background: #2c343f;
   padding: 10px;
   border-radius: 10px;
-  -webkit-transition: 1s;
-  transition: 1s;
   position: relative;
   cursor: pointer;
   overflow: hidden;

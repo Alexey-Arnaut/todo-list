@@ -143,6 +143,7 @@ path {
 
 * {
     box-sizing: border-box;
+    touch-action: none;
 
     &::-webkit-scrollbar {
         width: 0;
