@@ -1,284 +1,289 @@
 .wrap {
-    position: fixed;
-    background: rgb(#2C343F, 0.5);
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    z-index: 99;
-    opacity: 0;
-    pointer-events: none;
-    transition: 0.5s;
+  position: fixed;
+  background: rgb(#2c343f, 0.5);
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 99;
+  opacity: 0;
+  pointer-events: none;
+  transition: 0.5s;
 }
 
 .wrap--active {
-    opacity: 1;
-    pointer-events: all;
+  opacity: 1;
+  pointer-events: all;
 
-    .inner {
-        transform: translateY(0);
-    }
+  .inner {
+    transform: translateY(0);
+  }
 }
 
 .inner {
-    position: fixed;
-    bottom: 0;
-    right: 0;
-    left: 0;
-    background: #2C343F;
-    z-index: 99;
-    border-radius: 60px 60px 0 0;
-    padding: 15px;
-    transition: 0.5s;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    cursor: pointer;
-    border: 2px dashed #349eff;
-    border-bottom: 0;
-    transform: translateY(100%);
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  background: var(--bg-color);
+  z-index: 99;
+  border-radius: 60px 60px 0 0;
+  padding: 15px;
+  transition: 0.5s;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  border: 2px dashed #349eff;
+  border-bottom: 0;
+  transform: translateY(100%);
 }
 
 .container {
-    max-width: 600px;
-    width: 100%;
-    margin: 0 auto;
-    position: relative;
-    text-align: center;
+  max-width: 600px;
+  width: 100%;
+  margin: 0 auto;
+  position: relative;
+  text-align: center;
 }
 
 .title {
-    font-size: 20px;
+  font-size: 20px;
 }
 
 .name {
-    font-size: 18px;
-    width: 100%;
-    background: #212832;
-    margin-top: 15px;
-    padding: 10px;
-    border-radius: 10px;
-    border: 2px solid transparent;
-    position: relative;
+  font-size: 18px;
+  width: 100%;
+  background: var(--main-bg-color);
+  margin-top: 15px;
+  padding: 10px;
+  border-radius: 10px;
+  border: 2px solid transparent;
+  position: relative;
 
-    &::placeholder {
-        color: #FFFFFF;
-    }
+  &::placeholder {
+    color: var(--txt-color);
+  }
 
-    &:focus {
-        border-color: #349eff;
-    }
+  &:focus {
+    border-color: var(--primary-color);
+  }
 }
 
 .create__form-button {
+  color: var(--txt-color);
 
-    &::before {
-        width: 10px;
-        height: 10px;
-    }
+  &::before {
+    width: 10px;
+    height: 10px;
+  }
 }
 
 .button {
-    width: 100%;
-    background: #212832;
-    padding: 14px 0;
-    border-radius: 10px;
-    font-size: 16px;
-    margin-top: 15px;
-    position: relative;
+  width: 100%;
+  background: var(--main-bg-color);
+  padding: 14px 0;
+  border-radius: 10px;
+  font-size: 16px;
+  margin-top: 15px;
+  position: relative;
 
-    &:hover {
-        background: #349eff;
-    }
+  &:hover {
+    background: var(--primary-color);
+  }
 
-    &:active {
-        bottom: -1px;
-    }
+  &:active {
+    bottom: -1px;
+  }
 }
 
 .button-priorities {
-    display: flex;
-    align-items: center;
+  display: flex;
+  align-items: center;
 }
 
 .priority {
-    background: #212832;
-    width: 100%;
-    display: flex;
-    align-items: center;
-    padding: 14px 0;
-    margin-top: 15px;
-    border-radius: 10px;
-    font-size: 16px;
-    position: relative;
+  background: var(--main-bg-color);
+  width: 100%;
+  display: flex;
+  align-items: center;
+  padding: 14px 0;
+  margin-top: 15px;
+  border-radius: 10px;
+  font-size: 16px;
+  position: relative;
+
+  &::before {
+    position: absolute;
+    content: "";
+    width: 10px;
+    height: 10px;
+    background: var(--primary-color);
+    border-radius: 50%;
+    right: 10px;
+    opacity: 0;
+    transition: 0.5s;
+  }
+
+  &:hover {
+    background: var(--primary-color);
 
     &::before {
-        position: absolute;
-        content: '';
-        width: 10px;
-        height: 10px;
-        background: #349eff;
-        border-radius: 50%;
-        right: 10px;
-        opacity: 0;
-        transition: 0.5s;
+      opacity: 1;
+      background: #ffffff;
     }
-
-    &:hover {
-        background: #349eff;
-
-        &::before {
-            opacity: 1;
-            background: #FFFFFF;
-        }
-    }
+  }
 }
 
 .priority--active {
-
-    &::before {
-        opacity: 1;
-    }
+  &::before {
+    opacity: 1;
+  }
 }
 
 .selected {
-    width: 15px;
-    height: 15px;
-    border-radius: 50%;
-    margin: 0 10px;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  margin: 0 10px;
+  transition: 0.5s;
 }
 
 .priorities {
-    position: absolute;
-    bottom: -15px;
-    left: 0;
-    right: 0;
-    background: #2C343F;
-    width: 100%;
-    margin: 0 auto;
-    border-radius: 60px 60px 0 0;
-    padding: 15px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    border: 2px dashed #349eff;
-    border-bottom: 0;
-    transform: translateY(100%);
-    transition: 0.5s;
-    z-index: 1;
+  position: absolute;
+  bottom: -15px;
+  left: 0;
+  right: 0;
+  background: var(--bg-color);
+  width: 100%;
+  margin: 0 auto;
+  border-radius: 60px 60px 0 0;
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: 2px dashed var(--primary-color);
+  border-bottom: 0;
+  transform: translateY(100%);
+  transition: 0.5s;
+  z-index: 1;
 }
 
 .priorities--active {
-    transform: translateY(0);
+  transform: translateY(0);
 }
 
 .create__form-button-add {
-    background: #349eff;
+  background: var(--primary-color);
 
-    &:hover {
-        background: darken(#349eff, 10%);
-    }
+  &:hover {
+    background: var(--primary-color-dark);
+  }
 
-    &:disabled {
-        background: darken(#349eff, 10%);
-    }
+  &:disabled {
+    background: var(--primary-color-dark);
+  }
 }
 
 .task__edit-remove {
-    width: 40px;
-    height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: #E44F4F;
-    margin: 0 auto;
-    border-radius: 50%;
-    margin-top: 15px;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #e44f4f;
+  margin: 0 auto;
+  border-radius: 50%;
+  margin-top: 15px;
 
-    svg {
-        width: 20px;
-        height: 20px;
-    }
+  svg {
+    width: 20px;
+    height: 20px;
 
-    &:hover {
-        background: darken(#E44F4F, 10%);
+    path {
+      fill: #ffffff;
     }
+  }
+
+  &:hover {
+    background: darken(#e44f4f, 10%);
+  }
 }
 
 .modal {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .modal-inner {
-    background: #2C343F;
-    max-width: 600px;
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    border-radius: 10px;
-    padding: 25px;
+  background: var(--bg-color);
+  max-width: 600px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  padding: 25px;
 }
 
 .moda__buttons {
-    display: flex;
-    align-items: center;
-    margin-top: 30px;
+  display: flex;
+  align-items: center;
+  margin-top: 30px;
 }
 
 .modal__button {
-    font-size: 16px;
-    padding: 10px 30px;
-    border-radius: 10px;
+  font-size: 16px;
+  padding: 10px 30px;
+  border-radius: 10px;
 }
 
 .modal__button-confirm {
-    background: #349eff;
+  background: var(--primary-color);
 
-    &:hover {
-        background: darken(#349eff, 10%);
-    }
+  &:hover {
+    background: var(--primary-color-dark);
+  }
 }
 
 .modal__button-cancel {
-    background: #E44F4F;
-    margin-left: 15px;
+  background: #e44f4f;
+  margin-left: 15px;
 
-    &:hover {
-        background: darken(#E44F4F, 10%);
-    }
+  &:hover {
+    background: darken(#e44f4f, 10%);
+  }
 }
 
 .error {
-    animation: error .5s linear;
+  animation: error 0.5s linear;
 }
 
 @keyframes error {
-    0% {
-        right: 10px;
-        border-color: #E44F4F;
-    }
+  0% {
+    right: 10px;
+    border-color: #e44f4f;
+  }
 
-    25% {
-        right: -10px;
-        border-color: #E44F4F;
-    }
+  25% {
+    right: -10px;
+    border-color: #e44f4f;
+  }
 
-    50% {
-        right: 10px;
-        border-color: #E44F4F;
-    }
+  50% {
+    right: 10px;
+    border-color: #e44f4f;
+  }
 
-    75% {
-        right: -10px;
-        border-color: #E44F4F;
-    }
+  75% {
+    right: -10px;
+    border-color: #e44f4f;
+  }
 
-    100% {
-        right: 0;
-        border-color: #E44F4F;
-    }
+  100% {
+    right: 0;
+    border-color: #e44f4f;
+  }
 }

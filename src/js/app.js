@@ -24,6 +24,7 @@ document.querySelector('.create-wrapper').addEventListener('click', event => {
             document.querySelector('.create__form-priorities').classList.remove('priorities--active');
         } else {
             document.querySelector('.create-wrapper').classList.remove('wrap--active');
+            document.querySelector('.create__form-button-priorities-selected').id = 'color-white';
             addName.value = '';
         };
     };
@@ -34,26 +35,69 @@ document.querySelector('.create-wrapper').addEventListener('click', event => {
     };
 });
 
+// Закрытие формы на esc
+document.addEventListener('keydown', event => {
+    if (document.querySelector('.create__form-priorities').classList.contains('priorities--active')) {
+        if (event.key == 'Escape') {
+            document.querySelector('.create__form-priorities').classList.remove('priorities--active');
+        };
+    } else {
+        if (event.key == 'Escape') {
+            document.querySelector('.create-wrapper').classList.remove('wrap--active');
+            document.querySelector('.create__form-button-priorities-selected').id = 'color-white';
+            addName.value = '';
+        };
+    };
+});
+
 // Открыть выбор цвета
 document.querySelector('.create__form-button-priorities').addEventListener('click', () => {
     document.querySelector('.create__form-priorities').classList.add('priorities--active');
 });
 
-// Открыть удаление всех задач
+// Открыть удаление всех задач и смену темы
 document.querySelector('.header__top-settings').addEventListener('click', () => {
-    document.querySelector('.header__top-remove').classList.toggle('header__top-remove--active');
+    document.querySelectorAll('.header__top-button').forEach(topButton => {
+        topButton.classList.toggle('header__top-button--active');
+    });
 });
 
-// Закрыть удаление всех задач
+// Закрыть удаление всех задач и смену темы
 document.addEventListener('click', event => {
     if (!document.querySelector('.header__top-settings').contains(event.target)) {
-        document.querySelector('.header__top-remove').classList.remove('header__top-remove--active');
+        document.querySelectorAll('.header__top-button').forEach(topButton => {
+            topButton.classList.remove('header__top-button--active');
+        });
     };
 });
 
-// Добавление задачи
-document.querySelector('.create__form-button-add').addEventListener('click', () => {
+// Смена темы
+document.querySelector('.header__top-theme').addEventListener('click', () => {
+    if (localStorage.getItem('theme') == 'light-theme') {
+        localStorage.setItem('theme', 'dark-theme');
+        document.querySelector('.sun').classList.remove('header__top-icon--active');
+        document.querySelector('.moon').classList.add('header__top-icon--active');
+    } else {
+        localStorage.setItem('theme', 'light-theme');
+        document.querySelector('.moon').classList.remove('header__top-icon--active');
+        document.querySelector('.sun').classList.add('header__top-icon--active');
+    };
 
+    document.querySelector('body').className = localStorage.getItem('theme');
+});
+
+if (localStorage.getItem('theme') === null) {
+    localStorage.setItem('theme', 'light-theme');
+} else if (localStorage.getItem('theme') == 'light-theme') {
+    document.querySelector('.sun').classList.add('header__top-icon--active');
+} else if (localStorage.getItem('theme') == 'dark-theme') {
+    document.querySelector('.moon').classList.add('header__top-icon--active');
+};
+
+document.querySelector('body').className = localStorage.getItem('theme');
+
+// Добавление задачи
+const addTask = () => {
     if (addName.value.replace(/ +/g, ' ').trim().length == 0) {
         addName.focus();
         addName.classList.add('error');
@@ -62,16 +106,29 @@ document.querySelector('.create__form-button-add').addEventListener('click', () 
         setTimeout(() => {
             addName.classList.remove('error');
             document.querySelector('.create__form-button-add').disabled = false;
+            addName.setSelectionRange(0, 0);
         }, 500);
-
         return;
     };
 
     createTask();
 
+
     addName.value = ''
     addName.focus();
+    addName.setSelectionRange(0, 0);
+};
+
+document.addEventListener('keydown', (event) => {
+    if (document.querySelector('.create__form-priorities').classList.contains('priorities--active')) return;
+    if (document.querySelector('.create-wrapper').classList.contains('wrap--active')) {
+        if (event.key == 'Enter') {
+            addTask();
+        };
+    };
 });
+
+document.querySelector('.create__form-button-add').addEventListener('click', addTask);
 
 // Выбор приоритета
 const selectedPriority = () => {
@@ -117,31 +174,35 @@ let currentTask;
 const gestureStart = (event, task) => {
     initalPosition = event.pageX;
 
-    task.querySelector('.task__inner').style.transition = '0s';
-
     task.classList.add('task--move');
 
     currentTask = document.querySelector('.task--move');
+
+    task.querySelector('.task__inner').style.transition = '0s';
+    currentTask.querySelector('.task__inner-bg').style.transition = '0s';
 }
 
 const gestureMove = (event) => {
     if (currentTask !== undefined) {
-        const currentPosition = event.pageX;
-        diff = currentPosition - initalPosition;
-
-        if (diff >= 200 || diff <= -200) {
-            return
+        if (currentTask.querySelector('.task__edit').classList.contains('wrap--active')) {
+            return;
         } else {
-            currentTask.querySelector('.task__inner').style.transform = `translateX(${diff}px)`;
+            const currentPosition = event.pageX;
+            diff = currentPosition - initalPosition;
 
-            if (currentPosition < initalPosition) {
-                currentTask.querySelector('.task__inner-bg').style.width = `${-diff}px`;
-                currentTask.querySelector('.task__inner-bg').style.left = '';
-                currentTask.querySelector('.task__inner-bg').style.right = 0;
-                currentTask.querySelector('.task__inner-bg').style.background = '#E44F4F';
-                currentTask.querySelector('.task__inner-bg').style.borderRadius = '30px 0 0 30px';
-                currentTask.querySelector('.task__inner-bg').innerHTML =
-                    `
+            if (diff >= 200 || diff <= -200) {
+                return
+            } else {
+                currentTask.querySelector('.task__inner').style.transform = `translateX(${diff}px)`;
+
+                if (currentPosition < initalPosition) {
+                    currentTask.querySelector('.task__inner-bg').style.width = `${-diff}px`;
+                    currentTask.querySelector('.task__inner-bg').style.left = '';
+                    currentTask.querySelector('.task__inner-bg').style.right = 0;
+                    currentTask.querySelector('.task__inner-bg').style.background = '#E44F4F';
+                    currentTask.querySelector('.task__inner-bg').style.borderRadius = '30px 0 0 30px';
+                    currentTask.querySelector('.task__inner-bg').innerHTML =
+                        `
                     <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="trash"
                         class="svg-inline--fa fa-trash fa-w-14" role="img" xmlns="http://www.w3.org/2000/svg"
                         viewBox="0 0 448 512">
@@ -150,14 +211,14 @@ const gestureMove = (event) => {
                         </path>
                     </svg>
                     `
-            } else {
-                currentTask.querySelector('.task__inner-bg').style.width = `${diff}px`;
-                currentTask.querySelector('.task__inner-bg').style.left = 0;
-                currentTask.querySelector('.task__inner-bg').style.right = '';
-                currentTask.querySelector('.task__inner-bg').style.background = '#349eff';
-                currentTask.querySelector('.task__inner-bg').style.borderRadius = '0 30px 30px 0';
-                currentTask.querySelector('.task__inner-bg').innerHTML =
-                    `
+                } else {
+                    currentTask.querySelector('.task__inner-bg').style.width = `${diff}px`;
+                    currentTask.querySelector('.task__inner-bg').style.left = 0;
+                    currentTask.querySelector('.task__inner-bg').style.right = '';
+                    currentTask.querySelector('.task__inner-bg').style.background = '#349eff';
+                    currentTask.querySelector('.task__inner-bg').style.borderRadius = '0 30px 30px 0';
+                    currentTask.querySelector('.task__inner-bg').innerHTML =
+                        `
                     <svg width="15" height="11" viewBox="0 0 15 11" fill="none"
                         xmlns="http://www.w3.org/2000/svg">
                         <path
@@ -165,6 +226,7 @@ const gestureMove = (event) => {
                             fill="#4DD599" />
                     </svg>
                     `
+                };
             };
         };
     };
@@ -176,6 +238,7 @@ const gestureEnd = () => {
         currentTask.querySelector('.task__inner-bg').style.width = 0;
         currentTask.querySelector('.task__inner').style.transform = 'translateX(0px)';
         currentTask.querySelector('.task__inner').style.transition = '1s';
+        currentTask.querySelector('.task__inner-bg').style.transition = '1s';
     };
 
     if (diff >= 50 || diff <= -50) {
@@ -398,16 +461,36 @@ const editTask = (task) => {
     });
 
     task.querySelector('.task__edit').addEventListener('click', event => {
-        if (!task.querySelector('.task__edit-inner').contains(event.target)) {
-            if (task.querySelector('.task__edit-priorities').classList.contains('priorities--active')) {
-                task.querySelector('.task__edit-priorities').classList.remove('priorities--active');
-            } else {
-                task.querySelector('.task__edit').classList.remove('wrap--active');
+        if (task.querySelector('.task__edit-name').value.replace(/ +/g, ' ').trim().length == 0) {
+            return
+        } else {
+            if (!task.querySelector('.task__edit-inner').contains(event.target)) {
+                if (task.querySelector('.task__edit-priorities').classList.contains('priorities--active')) {
+                    task.querySelector('.task__edit-priorities').classList.remove('priorities--active');
+                } else {
+                    task.querySelector('.task__edit').classList.remove('wrap--active');
+                };
+            };
+            if (!task.querySelector('.task__edit-priority-button').contains(event.target)) {
+                if (!task.querySelector('.task__edit-priorities').contains(event.target)) {
+                    task.querySelector('.task__edit-priorities').classList.remove('priorities--active');
+                };
             };
         };
-        if (!task.querySelector('.task__edit-priority-button').contains(event.target)) {
-            if (!task.querySelector('.task__edit-priorities').contains(event.target)) {
-                task.querySelector('.task__edit-priorities').classList.remove('priorities--active');
+    });
+
+    document.addEventListener('keydown', event => {
+        if (task.querySelector('.task__edit-name').value.replace(/ +/g, ' ').trim().length == 0) {
+            return
+        } else {
+            if (task.querySelector('.task__edit-priorities').classList.contains('priorities--active')) {
+                if (event.key == 'Escape') {
+                    task.querySelector('.task__edit-priorities').classList.remove('priorities--active');
+                };
+            } else {
+                if (event.key == 'Escape') {
+                    task.querySelector('.task__edit').classList.remove('wrap--active');
+                };
             };
         };
     });

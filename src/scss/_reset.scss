@@ -131,10 +131,10 @@ textarea {
     cursor: pointer;
     background: none;
     resize: none;
-    color: #FFFFFF;
     font-family: 'Comfortaa', serif;
     padding: 0;
     transition: 0.5s;
+    color: var(--txt-color);
 }
 
 path {
@@ -157,8 +157,9 @@ img {
 body {
     line-height: 1;
     font-family: 'Comfortaa', serif;
-    background: #212832;
-    color: #FFFFFF;
+    background: var(--main-bg-color);
+    color: var(--txt-color);
+    transition: 0.5s;
 }
 
 .wrapper {

@@ -1,157 +1,185 @@
 .header {
-    position: fixed;
-    max-width: 1920px;
-    width: 100%;
-    margin: 0 auto;
-    padding: 10px 15px;
-    display: flex;
-    flex-direction: column;
-    background: #212832;
-    z-index: 1;
+  position: fixed;
+  max-width: 1920px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 10px 15px;
+  display: flex;
+  flex-direction: column;
+  background: var(--main-bg-color);
+  z-index: 1;
 }
 
 .header__top {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 15px;
 }
 
 .header__top-title {
-    font-size: 20px;
+  font-size: 20px;
 }
 
 .header__top-settings {
+  height: 25px;
+  transition: 0.5s;
+
+  svg {
+    width: 25px;
     height: 25px;
-    transition: 0.5s;
+  }
 
-    svg {
-        width: 25px;
-        height: 25px;
+  &:hover {
+    transform: rotate(180deg);
+
+    path {
+      fill: var(--primary-color);
     }
+  }
+}
 
-    &:hover {
-        transform: rotate(180deg);
-
-        path {
-            fill: #349eff;
-        }
-    }
+.header__top-button {
+  position: absolute;
+  background: var(--bg-color);
+  right: 15px;
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  border-radius: 10px;
+  z-index: 1;
+  opacity: 0;
+  pointer-events: none;
+  font-size: 16px;
 }
 
 .header__top-remove {
-    position: absolute;
-    background: #2C343F;
-    right: 15px;
-    top: 40px;
-    display: flex;
-    align-items: center;
-    padding: 10px;
-    border-radius: 10px;
-    z-index: 1;
-    transform: translateY(-20px);
-    opacity: 0;
-    pointer-events: none;
-    font-size: 16px;
+  top: 40px;
+  transform: translateY(-20px);
 
-    &:hover {
-        background: #E44F4F;
-    }
+  &:hover {
+    background: #e44f4f;
+  }
 }
 
-.header__top-remove--active {
-    opacity: 1;
-    pointer-events: all;
-    transform: translateY(0);
+.header__top-theme {
+  top: 90px;
+  transform: translateY(-30px);
+  transition-delay: 0.2s;
+  overflow: hidden;
+
+  &:hover {
+    background: var(--primary-color);
+  }
 }
 
-.header__top-remove-icon {
+.header__top-button--active {
+  opacity: 1;
+  pointer-events: all;
+  transform: translateY(0);
+}
+
+.header__top-icon {
+  height: 20px;
+  margin-right: 10px;
+
+  svg {
+    width: 20px;
     height: 20px;
-    margin-right: 10px;
+  }
+}
 
-    svg {
-        width: 20px;
-        height: 20px;
-    }
+.sun {
+  transition: 0.5s;
+}
+
+.moon {
+  transition: 0.5s;
+}
+
+.header__top-icon--active {
+  opacity: 0;
+  transform: translateY(50px);
+  position: absolute;
 }
 
 .header__bottom-progress {
-    display: flex;
-    align-items: center;
+  display: flex;
+  align-items: center;
 
-    span {
-        font-size: 14px;
-        margin-left: 5px;
-    }
+  span {
+    font-size: 14px;
+    margin-left: 5px;
+  }
 }
 
 .header__bottom-progress-bar {
-    width: 100%;
-    height: 10px;
-    background: #2C343F;
-    border-radius: 10px;
-    position: relative;
-    overflow: hidden;
+  width: 100%;
+  height: 10px;
+  background: var(--bg-color);
+  border-radius: 10px;
+  position: relative;
+  overflow: hidden;
 }
 
 .header__bottom-progress-bar-bg {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    background: #349eff;
-    border-radius: 0 10px 10px 0;
-    transition: 0.5s;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  background: var(--primary-color);
+  border-radius: 0 10px 10px 0;
+  transition: 0.5s;
 }
 
 .header__bottom-progress-count {
-    margin-left: 10px;
-    font-size: 20px;
+  margin-left: 10px;
+  font-size: 20px;
 }
 
 .header__bottom-info {
-    display: flex;
-    align-items: center;
-    margin-top: 15px;
-    position: relative;
+  display: flex;
+  align-items: center;
+  margin-top: 15px;
+  position: relative;
 
-    span {
-        font-size: 14px;
-        margin: 0 5px;
-    }
+  span {
+    font-size: 14px;
+    margin: 0 5px;
+  }
 }
 
 .header__bottom-icon {
-    height: 25px;
-    margin-right: 10px;
+  height: 25px;
+  margin-right: 10px;
 
-    svg {
-        width: 25px;
-        height: 25px;
-    }
+  svg {
+    width: 25px;
+    height: 25px;
+  }
 }
 
 .header__bottom-task-completed {
-    font-size: 20px;
+  font-size: 20px;
 }
 
 .header__bottom-all-task {
-    font-size: 20px;
+  font-size: 20px;
 }
 
 .header__bottom-add {
-    margin-top: 15px;
-    font-size: 16px;
-    padding: 10px 30px;
-    background: #349eff;
-    border-radius: 10px;
-    position: relative;
+  margin-top: 15px;
+  font-size: 16px;
+  padding: 10px 30px;
+  background: var(--primary-color);
+  border-radius: 10px;
+  position: relative;
 
-    &:hover {
-        background: darken(#349eff, 10%);
-    }
+  &:hover {
+    background: var(--primary-color-dark);
+  }
 
-    &:active {
-        bottom: -1px;
-    }
+  &:active {
+    bottom: -1px;
+  }
 }
