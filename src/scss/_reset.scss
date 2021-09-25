@@ -143,8 +143,8 @@ path {
 
 * {
   box-sizing: border-box;
-  touch-action: none;
   -webkit-tap-highlight-color: transparent;
+  touch-action: pan-y;
 
   &::-webkit-scrollbar {
     width: 0;
@@ -220,4 +220,68 @@ body {
 
 #color-peach {
   background: #f0838a;
+}
+
+.preloader {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: var(--main-bg-color);
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: 0.5s;
+}
+
+.preloader--hide {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.preloader-circle {
+  width: 150px;
+  height: 150px;
+  border: 3px solid transparent;
+  border-radius: 50%;
+  border-top-color: #337ab7;
+  animation: preloader 2s linear infinite;
+
+  &::before,
+  &::after {
+    content: "";
+    position: absolute;
+    border-radius: 50%;
+  }
+
+  &::before {
+    top: 5px;
+    left: 5px;
+    right: 5px;
+    bottom: 5px;
+    border: 3px solid transparent;
+    border-top-color: #bfe2ff;
+    animation: preloader 3s linear infinite;
+  }
+
+  &::after {
+    top: 15px;
+    left: 15px;
+    right: 15px;
+    bottom: 15px;
+    border: 3px solid transparent;
+    border-top-color: #337ab7;
+    animation: preloader 1.5s linear infinite;
+  }
+}
+
+@keyframes preloader {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }

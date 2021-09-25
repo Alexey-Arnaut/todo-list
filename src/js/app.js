@@ -9,6 +9,13 @@ const updateLocal = () => {
     localStorage.setItem('tasks', JSON.stringify(tasks));
 }
 
+//Прелоадер
+window.onload = () => {
+    setTimeout(() => {
+        document.querySelector('.preloader').classList.add('preloader--hide');
+    }, 1000);
+};
+
 // Открытие формы добавления задачи
 document.querySelectorAll('.open__form').forEach(openFolderButton => {
     openFolderButton.addEventListener('click', () => {
@@ -241,20 +248,21 @@ const gestureMove = (event) => {
             const currentPosition = event.pageX;
             diff = currentPosition - initalPosition;
 
-            if (diff >= 150 || diff <= -150) {
-                return
-            } else {
-                currentTask.querySelector('.task__inner').style.transform = `translateX(${diff}px)`;
-                currentTask.querySelector('.task__inner').style.background = '#227dd3';
+            if (diff > 20 || diff < -20) {
+                if (diff >= 150 || diff <= -150) {
+                    return
+                } else {
+                    currentTask.querySelector('.task__inner').style.transform = `translateX(${diff}px)`;
+                    currentTask.querySelector('.task__inner').style.background = '#227dd3';
 
-                if (currentPosition < initalPosition) {
-                    currentTask.querySelector('.task__inner-bg').style.width = `${-diff}px`;
-                    currentTask.querySelector('.task__inner-bg').style.left = '';
-                    currentTask.querySelector('.task__inner-bg').style.right = 0;
-                    currentTask.querySelector('.task__inner-bg').style.background = '#E44F4F';
-                    currentTask.querySelector('.task__inner-bg').style.borderRadius = '30px 0 0 30px';
-                    currentTask.querySelector('.task__inner-bg').innerHTML =
-                        `
+                    if (currentPosition < initalPosition) {
+                        currentTask.querySelector('.task__inner-bg').style.width = `${-diff}px`;
+                        currentTask.querySelector('.task__inner-bg').style.left = '';
+                        currentTask.querySelector('.task__inner-bg').style.right = 0;
+                        currentTask.querySelector('.task__inner-bg').style.background = '#E44F4F';
+                        currentTask.querySelector('.task__inner-bg').style.borderRadius = '30px 0 0 30px';
+                        currentTask.querySelector('.task__inner-bg').innerHTML =
+                            `
                     <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="trash"
                         class="svg-inline--fa fa-trash fa-w-14" role="img" xmlns="http://www.w3.org/2000/svg"
                         viewBox="0 0 448 512">
@@ -263,14 +271,14 @@ const gestureMove = (event) => {
                         </path>
                     </svg>
                     `
-                } else {
-                    currentTask.querySelector('.task__inner-bg').style.width = `${diff}px`;
-                    currentTask.querySelector('.task__inner-bg').style.left = 0;
-                    currentTask.querySelector('.task__inner-bg').style.right = '';
-                    currentTask.querySelector('.task__inner-bg').style.background = '#349eff';
-                    currentTask.querySelector('.task__inner-bg').style.borderRadius = '0 30px 30px 0';
-                    currentTask.querySelector('.task__inner-bg').innerHTML =
-                        `
+                    } else {
+                        currentTask.querySelector('.task__inner-bg').style.width = `${diff}px`;
+                        currentTask.querySelector('.task__inner-bg').style.left = 0;
+                        currentTask.querySelector('.task__inner-bg').style.right = '';
+                        currentTask.querySelector('.task__inner-bg').style.background = '#349eff';
+                        currentTask.querySelector('.task__inner-bg').style.borderRadius = '0 30px 30px 0';
+                        currentTask.querySelector('.task__inner-bg').innerHTML =
+                            `
                     <svg width="15" height="11" viewBox="0 0 15 11" fill="none"
                         xmlns="http://www.w3.org/2000/svg">
                         <path
@@ -278,6 +286,7 @@ const gestureMove = (event) => {
                             fill="#4DD599" />
                     </svg>
                     `
+                    };
                 };
             };
         };
@@ -302,7 +311,7 @@ const gestureEnd = () => {
 
         setTimeout(() => {
             renderTask();
-            document.querySelector('.overlay').classList.remove('overlay--active'); 
+            document.querySelector('.overlay').classList.remove('overlay--active');
         }, 1000);
     };
     if (diff <= -100) {
@@ -313,7 +322,7 @@ const gestureEnd = () => {
 
         setTimeout(() => {
             renderTask();
-            document.querySelector('.overlay').classList.remove('overlay--active'); 
+            document.querySelector('.overlay').classList.remove('overlay--active');
         }, 1000);
     };
 

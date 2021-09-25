@@ -89,18 +89,25 @@
   }
 }
 
+.header__top-theme {
+  padding-left: 30px;
+}
+
 .sun {
   transition: 0.5s;
+  position: absolute;
+  left: 10px;
 }
 
 .moon {
   transition: 0.5s;
+  position: absolute;
+  left: 10px;
 }
 
 .header__top-icon--active {
   opacity: 0;
   transform: translateY(50px);
-  position: absolute;
 }
 
 .header__bottom-progress {
