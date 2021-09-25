@@ -102,6 +102,30 @@
   align-items: center;
 }
 
+.priorities {
+  position: absolute;
+  bottom: -15px;
+  left: 0;
+  right: 0;
+  background: var(--bg-color);
+  width: 100%;
+  margin: 0 auto;
+  border-radius: 60px 60px 0 0;
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: 2px dashed var(--primary-color);
+  border-bottom: 0;
+  transform: translateY(100%);
+  transition: 0.5s;
+  z-index: 1;
+}
+
+.priorities--active {
+  transform: translateY(0);
+}
+
 .priority {
   background: var(--main-bg-color);
   width: 100%;
@@ -149,28 +173,84 @@
   transition: 0.5s;
 }
 
-.priorities {
-  position: absolute;
-  bottom: -15px;
-  left: 0;
-  right: 0;
-  background: var(--bg-color);
-  width: 100%;
-  margin: 0 auto;
-  border-radius: 60px 60px 0 0;
-  padding: 15px;
+.button-colors {
   display: flex;
-  flex-direction: column;
   align-items: center;
-  border: 2px dashed var(--primary-color);
-  border-bottom: 0;
-  transform: translateY(100%);
-  transition: 0.5s;
-  z-index: 1;
 }
 
-.priorities--active {
+.colors {
+  position: absolute;
+  bottom: -15px;
+  background: var(--bg-color);
+  border: 2px dashed var(--primary-color);
+  border-bottom: 0;
+  width: 100%;
+  padding: 15px;
+  border-radius: 40px 40px 0 0;
+  display: flex;
+  flex-direction: column;
+  transform: translateY(100%);
+  transition: 0.5s;
+  z-index: 1
+}
+
+.colors--active {
   transform: translateY(0);
+}
+
+.colors-inner {
+  margin-top: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.color {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--main-bg-color);
+  margin-right: 15px;
+  border-radius: 10px;
+  position: relative;
+
+  &:hover {
+    background: var(--primary-color-dark);
+  }
+
+  &:last-child {
+    margin-right: 0;
+  }
+}
+
+.color-white {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &::before {
+    position: absolute;
+    content: "";
+    width: 4px;
+    background: red;
+    top: 0;
+    bottom: 0;
+    border-radius: 10px;
+  }
+  &::before {
+    transform: rotate(45deg);
+  }
+}
+
+.color--active {
+  background: var(--primary-color-dark);
+}
+
+.selected-color {
+  min-width: 20px;
+  height: 20px;
 }
 
 .create__form-button-add {

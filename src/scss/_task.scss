@@ -37,6 +37,15 @@
   }
 }
 
+.task__color {
+  width: 5px;
+  height: 30px;
+  border-radius: 10px;
+  position: relative;
+  left: -5px;
+  transition: 0.5s;
+}
+
 .task__inner-bg {
   position: absolute;
   top: 0;

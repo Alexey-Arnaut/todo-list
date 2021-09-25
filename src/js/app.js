@@ -1,6 +1,7 @@
 let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
 
 let taskPriority = '';
+let taskColor = '';
 const tasksList = document.querySelector('.task-list');
 const addName = document.querySelector('.create__form-name');
 
@@ -22,6 +23,8 @@ document.querySelector('.create-wrapper').addEventListener('click', event => {
     if (!document.querySelector('.create-inner').contains(event.target)) {
         if (document.querySelector('.create__form-priorities').classList.contains('priorities--active')) {
             document.querySelector('.create__form-priorities').classList.remove('priorities--active');
+        } else if (document.querySelector('.create__form-colors').classList.contains('colors--active')) {
+            document.querySelector('.create__form-colors').classList.remove('colors--active');
         } else {
             document.querySelector('.create-wrapper').classList.remove('wrap--active');
             document.querySelector('.create__form-button-priorities-selected').id = 'color-white';
@@ -33,6 +36,11 @@ document.querySelector('.create-wrapper').addEventListener('click', event => {
             document.querySelector('.create__form-priorities').classList.remove('priorities--active');
         };
     };
+    if (!document.querySelector('.create__form-button-color').contains(event.target)) {
+        if (!document.querySelector('.create__form-colors').contains(event.target)) {
+            document.querySelector('.create__form-colors').classList.remove('colors--active');
+        };
+    };
 });
 
 // Закрытие формы на esc
@@ -40,6 +48,10 @@ document.addEventListener('keydown', event => {
     if (document.querySelector('.create__form-priorities').classList.contains('priorities--active')) {
         if (event.key == 'Escape') {
             document.querySelector('.create__form-priorities').classList.remove('priorities--active');
+        };
+    } else if (document.querySelector('.create__form-colors').classList.contains('colors--active')) {
+        if (event.key == 'Escape') {
+            document.querySelector('.create__form-colors').classList.remove('colors--active');
         };
     } else {
         if (event.key == 'Escape') {
@@ -50,9 +62,14 @@ document.addEventListener('keydown', event => {
     };
 });
 
-// Открыть выбор цвета
+// Открыть выбор приоритета
 document.querySelector('.create__form-button-priorities').addEventListener('click', () => {
     document.querySelector('.create__form-priorities').classList.add('priorities--active');
+});
+
+// Открыть выбор цвета
+document.querySelector('.create__form-button-color').addEventListener('click', () => {
+    document.querySelector('.create__form-colors').classList.add('colors--active');
 });
 
 // Открыть удаление всех задач и смену темы
@@ -121,6 +138,7 @@ const addTask = () => {
 
 document.addEventListener('keydown', (event) => {
     if (document.querySelector('.create__form-priorities').classList.contains('priorities--active')) return;
+    if (document.querySelector('.create__form-colors').classList.contains('colors--active')) return;
     if (document.querySelector('.create-wrapper').classList.contains('wrap--active')) {
         if (event.key == 'Enter') {
             addTask();
@@ -163,6 +181,38 @@ const selectedPriority = () => {
         taskPriority = '';
         document.querySelector('.create__form-button-priorities-selected').id = 'color-white';
         document.querySelector('.create__form-button-priorities span').innerHTML = 'Установить приоритет';
+    });
+}
+
+const selectedColor = () => {
+    document.querySelectorAll('.create__form-color').forEach(color => {
+        color.addEventListener('click', () => {
+
+            document.querySelectorAll('.create__form-color').forEach(color => {
+                color.classList.remove('color--active');
+            });
+
+            color.classList.add('color--active');
+
+            if (color.querySelector('.create__form-color-selected').id == 'color-white') {
+                taskColor = '';
+                document.querySelector('.create__form-color-selected').id = 'color-white';
+            } else {
+                taskColor = color.querySelector('.create__form-color-selected').id;
+                document.querySelector('.create__form-color-selected').id = color.querySelector('.create__form-color-selected').id;
+            };
+
+            document.querySelector('.create__form-colors').classList.remove('colors--active');
+        });
+
+        document.querySelectorAll('.create__form-color').forEach(color => {
+            color.classList.remove('priority--active');
+        });
+
+        document.querySelectorAll('.create__form-color')[0].classList.add('priority--active');
+
+        taskColor = '';
+        document.querySelector('.create__form-color-selected').id = 'color-white';
     });
 }
 
@@ -283,6 +333,7 @@ const createTask = () => {
         name: addName.value,
         completed: false,
         priority: taskPriority,
+        color: taskColor,
     });
 
     renderTask();
@@ -294,6 +345,7 @@ const createTaskTemplate = (task, index) => {
     return `
         <div class="task" data-index="${index}">
             <div class="task__inner">
+                <div class="task__color" id="${task.color}"></div>
                 <div class="task__inner-bg"></div>
                 <button class="task__completed">
                     <svg width="15" height="11" viewBox="0 0 15 11" fill="none"
@@ -303,8 +355,7 @@ const createTaskTemplate = (task, index) => {
                             fill="#4DD599" />
                     </svg>
                 </button>
-                <textarea class="task__name" rows="1"
-                    readonly>${task.name.replace(/ +/g, ' ').trim()}</textarea>
+                <textarea class="task__name" rows="1" readonly>${task.name.replace(/ +/g, ' ').trim()}</textarea>
                 <button class="task__button task__button-edit">
                     <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="pen"
                         class="svg-inline--fa fa-pen fa-w-16" role="img" xmlns="http://www.w3.org/2000/svg"
@@ -355,6 +406,39 @@ const createTaskTemplate = (task, index) => {
                                     <span>Нет приоритета</span>
                                 </button>
                             </div>
+                            <button class="task__edit-color-button button-colors button">
+                                <div class="task__edit-color-selected selected" id="color-white"></div>
+                                <span>Установить цвет</span>
+                            </button>
+                            <div class="task__edit-colors colors">
+                                <h2 class="task__edit-colors-title title">Выберите цвет</h2>
+                                <div class="task__edit-colors-inner colors-inner">
+                                    <button class="task__edit-color color color-white color--active">
+                                        <div class="task__edit-color-selected selected selected-color" id="color-white"></div>
+                                    </button>
+                                    <button class="task__edit-color color">
+                                        <div class="task__edit-color-selected selected selected-color" id="color-red"></div>
+                                    </button>
+                                    <button class="task__edit-color color">
+                                        <div class="task__edit-color-selected selected selected-color" id="color-yellow"></div>
+                                    </button>
+                                    <button class="task__edit-color color">
+                                        <div class="task__edit-color-selected selected selected-color" id="color-green"></div>
+                                    </button>
+                                    <button class="task__edit-color color">
+                                        <div class="task__edit-color-selected selected selected-color" id="color-purple"></div>
+                                    </button>
+                                    <button class="task__edit-color color">
+                                        <div class="task__edit-color-selected selected selected-color" id="color-pink"></div>
+                                    </button>
+                                    <button class="task__edit-color color">
+                                        <div class="task__edit-color-selected selected selected-color" id="color-orange"></div>
+                                    </button>
+                                    <button class="task__edit-color color">
+                                        <div class="task__edit-color-selected selected selected-color" id="color-peach"></div>
+                                    </button>
+                                </div>
+                            </div>
                             <button class="task__edit-remove">
                                 <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="trash"
                                     class="svg-inline--fa fa-trash fa-w-14" role="img"
@@ -375,6 +459,7 @@ const createTaskTemplate = (task, index) => {
 // Отображение задач
 const renderTask = () => {
     selectedPriority();
+    selectedColor();
 
     tasksList.innerHTML = '';
 
@@ -456,8 +541,15 @@ const editTask = (task) => {
             task.querySelector('.task__edit-priority-selected').id = tasks[task.dataset.index].priority;
         };
 
+        if (tasks[task.dataset.index].color == '') {
+            task.querySelector('.task__edit-color-selected').id = 'color-white';
+        } else {
+            task.querySelector('.task__edit-color-selected').id = tasks[task.dataset.index].color;
+        };
+
         changeTaskName(task);
         changeTaskPriority(task);
+        changeTaskColor(task);
     });
 
     task.querySelector('.task__edit').addEventListener('click', event => {
@@ -467,6 +559,8 @@ const editTask = (task) => {
             if (!task.querySelector('.task__edit-inner').contains(event.target)) {
                 if (task.querySelector('.task__edit-priorities').classList.contains('priorities--active')) {
                     task.querySelector('.task__edit-priorities').classList.remove('priorities--active');
+                } else if (task.querySelector('.task__edit-colors').classList.contains('colors--active')) {
+                    task.querySelector('.task__edit-colors ').classList.remove('colors--active');
                 } else {
                     task.querySelector('.task__edit').classList.remove('wrap--active');
                 };
@@ -474,6 +568,11 @@ const editTask = (task) => {
             if (!task.querySelector('.task__edit-priority-button').contains(event.target)) {
                 if (!task.querySelector('.task__edit-priorities').contains(event.target)) {
                     task.querySelector('.task__edit-priorities').classList.remove('priorities--active');
+                };
+            };
+            if (!task.querySelector('.task__edit-color-button').contains(event.target)) {
+                if (!task.querySelector('.task__edit-colors').contains(event.target)) {
+                    task.querySelector('.task__edit-colors').classList.remove('colors--active');
                 };
             };
         };
@@ -486,6 +585,10 @@ const editTask = (task) => {
             if (task.querySelector('.task__edit-priorities').classList.contains('priorities--active')) {
                 if (event.key == 'Escape') {
                     task.querySelector('.task__edit-priorities').classList.remove('priorities--active');
+                };
+            } else if (task.querySelector('.task__edit-colors').classList.contains('colors--active')) {
+                if (event.key == 'Escape') {
+                    task.querySelector('.task__edit-colors').classList.remove('colors--active');
                 };
             } else {
                 if (event.key == 'Escape') {
@@ -559,6 +662,47 @@ const changeTaskPriority = (task) => {
                 };
 
                 task.querySelector('.task__edit-priorities').classList.remove('priorities--active');
+                updateLocal();
+            });
+        });
+    });
+}
+
+// Смена цвета задачи
+const changeTaskColor = (task) => {
+    task.querySelector('.task__edit-color-button').addEventListener('click', () => {
+        task.querySelector('.task__edit-colors').classList.add('colors--active');
+
+        task.querySelectorAll('.task__edit-color').forEach(color => {
+            if (tasks[task.dataset.index].color == color.querySelector('.task__edit-color-selected').id) {
+                color.classList.add('color--active');
+            } else if(tasks[task.dataset.index].color == '') {
+                task.querySelectorAll('.task__edit-color')[0].classList.add('color--active');
+            } else {
+                color.classList.remove('color--active');
+            };
+
+            color.addEventListener('click', () => {
+
+                task.querySelectorAll('.task__edit-color').forEach(color => {
+                    color.classList.remove('color--active');
+                });
+
+                color.classList.add('color--active');
+
+                tasks[task.dataset.index].color = color.querySelector('.task__edit-color-selected').id;
+
+                task.querySelector('.task__color').id = tasks[task.dataset.index].color;
+
+                if (color.querySelector('.task__edit-color-selected').id == 'color-white') {
+                    task.querySelector('.task__edit-color-selected').id = 'color-white';
+                    task.querySelector('.task__color').id = '';
+                    tasks[task.dataset.index].color = '';
+                } else {
+                    task.querySelector('.task__edit-color-selected').id = tasks[task.dataset.index].color;
+                };
+
+                task.querySelector('.task__edit-colors').classList.remove('colors--active');
                 updateLocal();
             });
         });
