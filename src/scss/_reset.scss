@@ -79,12 +79,12 @@ time,
 mark,
 audio,
 video {
-    margin: 0;
-    padding: 0;
-    border: 0;
-    font-size: 100%;
-    font: inherit;
-    vertical-align: baseline;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
 }
 
 article,
@@ -98,111 +98,126 @@ hgroup,
 menu,
 nav,
 section {
-    display: block;
+  display: block;
 }
 
 ol,
 ul {
-    list-style: none;
+  list-style: none;
 }
 
 blockquote,
 q {
-    quotes: none;
+  quotes: none;
 }
 
 blockquote:before,
 blockquote:after,
 q:before,
 q:after {
-    content: '';
-    content: none;
+  content: "";
+  content: none;
 }
 
 table {
-    border-collapse: collapse;
-    border-spacing: 0;
+  border-collapse: collapse;
+  border-spacing: 0;
 }
 
 button,
 textarea {
-    outline: none;
-    border: none;
-    cursor: pointer;
-    background: none;
-    resize: none;
-    font-family: 'Comfortaa', serif;
-    padding: 0;
-    transition: 0.5s;
-    color: var(--txt-color);
+  outline: none;
+  border: none;
+  cursor: pointer;
+  background: none;
+  resize: none;
+  font-family: "Comfortaa", serif;
+  padding: 0;
+  transition: 0.5s;
+  color: var(--txt-color);
 }
 
 path {
-    transition: 0.5s;
+  transition: 0.5s;
 }
 
 * {
-    box-sizing: border-box;
-    touch-action: none;
+  box-sizing: border-box;
+  touch-action: none;
+  -webkit-tap-highlight-color: transparent;
 
-    &::-webkit-scrollbar {
-        width: 0;
-    }
+  &::-webkit-scrollbar {
+    width: 0;
+  }
 }
 
 img {
-    pointer-events: none;
+  pointer-events: none;
 }
 
 body {
-    line-height: 1;
-    font-family: 'Comfortaa', serif;
-    background: var(--main-bg-color);
-    color: var(--txt-color);
-    transition: 0.5s;
+  line-height: 1;
+  font-family: "Comfortaa", serif;
+  background: var(--main-bg-color);
+  color: var(--txt-color);
+  transition: 0.5s;
 }
 
 .wrapper {
-    max-width: 1920px;
-    width: 100%;
-    margin: 0 auto;
-    position: relative;
+  max-width: 1920px;
+  width: 100%;
+  margin: 0 auto;
+  position: relative;
 }
 
 .main {
-    padding: 200px 15px 0 15px;
-    height: 100vh;
-    min-height: 550px;
+  padding: 200px 15px 0 15px;
+  height: 100vh;
+  min-height: 550px;
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 99;
+  pointer-events: none;
+}
+
+.overlay--active {
+  pointer-events: all;
 }
 
 #color-red {
-    background: #E44F4F;
+  background: #e44f4f;
 }
 
 #color-yellow {
-    background: #EEE48F;
+  background: #eee48f;
 }
 
 #color-green {
-    background: #1BC47D;
+  background: #1bc47d;
 }
 
 #color-white {
-    background: #FFFFFF;
+  background: #ffffff;
 }
 
 #color-purple {
-    background: #6360DE;
+  background: #6360de;
 }
 
 #color-pink {
-    background: #EB8BE1;
+  background: #eb8be1;
 }
 
 #color-orange {
-    background: #D78150;
+  background: #d78150;
 }
 
 #color-peach {
-    background: #F0838A;
+  background: #f0838a;
 }

@@ -170,6 +170,7 @@ path {
           box-sizing: border-box;
   -ms-touch-action: none;
       touch-action: none;
+  -webkit-tap-highlight-color: transparent;
 }
 *::-webkit-scrollbar {
   width: 0;
@@ -201,36 +202,50 @@ body {
   min-height: 550px;
 }
 
+.overlay {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 99;
+  pointer-events: none;
+}
+
+.overlay--active {
+  pointer-events: all;
+}
+
 #color-red {
-  background: #E44F4F;
+  background: #e44f4f;
 }
 
 #color-yellow {
-  background: #EEE48F;
+  background: #eee48f;
 }
 
 #color-green {
-  background: #1BC47D;
+  background: #1bc47d;
 }
 
 #color-white {
-  background: #FFFFFF;
+  background: #ffffff;
 }
 
 #color-purple {
-  background: #6360DE;
+  background: #6360de;
 }
 
 #color-pink {
-  background: #EB8BE1;
+  background: #eb8be1;
 }
 
 #color-orange {
-  background: #D78150;
+  background: #d78150;
 }
 
 #color-peach {
-  background: #F0838A;
+  background: #f0838a;
 }
 
 .header {
@@ -442,7 +457,7 @@ body {
 }
 
 .task-list {
-  overflow: hidden;
+  overflow-x: hidden;
 }
 
 .task {
@@ -505,6 +520,7 @@ body {
           justify-content: center;
   overflow: hidden;
   width: 0;
+  z-index: 10;
 }
 .task__inner-bg svg {
   width: 20px;

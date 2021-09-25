@@ -184,6 +184,7 @@ const selectedPriority = () => {
     });
 }
 
+// Выбор цвета
 const selectedColor = () => {
     document.querySelectorAll('.create__form-color').forEach(color => {
         color.addEventListener('click', () => {
@@ -240,10 +241,11 @@ const gestureMove = (event) => {
             const currentPosition = event.pageX;
             diff = currentPosition - initalPosition;
 
-            if (diff >= 200 || diff <= -200) {
+            if (diff >= 150 || diff <= -150) {
                 return
             } else {
                 currentTask.querySelector('.task__inner').style.transform = `translateX(${diff}px)`;
+                currentTask.querySelector('.task__inner').style.background = '#227dd3';
 
                 if (currentPosition < initalPosition) {
                     currentTask.querySelector('.task__inner-bg').style.width = `${-diff}px`;
@@ -289,36 +291,31 @@ const gestureEnd = () => {
         currentTask.querySelector('.task__inner').style.transform = 'translateX(0px)';
         currentTask.querySelector('.task__inner').style.transition = '1s';
         currentTask.querySelector('.task__inner-bg').style.transition = '1s';
+        currentTask.querySelector('.task__inner').style.background = '';
     };
 
-    if (diff >= 50 || diff <= -50) {
-        document.querySelectorAll('.task').forEach(task => {
-            task.style.pointerEvents = 'none';
-        });
-    };
-
-    if (diff >= 150) {
+    if (diff >= 100) {
         tasks[currentTask.dataset.index].completed = !tasks[currentTask.dataset.index].completed;
         completedTask(currentTask);
 
+        document.querySelector('.overlay').classList.add('overlay--active');
+
         setTimeout(() => {
             renderTask();
+            document.querySelector('.overlay').classList.remove('overlay--active'); 
         }, 1000);
     };
-    if (diff <= -150) {
+    if (diff <= -100) {
         tasks.splice(currentTask.dataset.index, 1);
         currentTask.querySelector('.task__inner').classList.add('task--hide');
 
+        document.querySelector('.overlay').classList.add('overlay--active');
+
         setTimeout(() => {
             renderTask();
+            document.querySelector('.overlay').classList.remove('overlay--active'); 
         }, 1000);
     };
-
-    setTimeout(() => {
-        document.querySelectorAll('.task').forEach(task => {
-            task.style.pointerEvents = 'all';
-        });
-    }, 1000);
 
     updateLocal();
 
@@ -676,7 +673,7 @@ const changeTaskColor = (task) => {
         task.querySelectorAll('.task__edit-color').forEach(color => {
             if (tasks[task.dataset.index].color == color.querySelector('.task__edit-color-selected').id) {
                 color.classList.add('color--active');
-            } else if(tasks[task.dataset.index].color == '') {
+            } else if (tasks[task.dataset.index].color == '') {
                 task.querySelectorAll('.task__edit-color')[0].classList.add('color--active');
             } else {
                 color.classList.remove('color--active');
